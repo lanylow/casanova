@@ -1,5 +1,5 @@
 #pragma once
 
 namespace casanova {
-  void init();
+  unsigned long __stdcall init();
 }

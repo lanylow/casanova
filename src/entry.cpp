@@ -1,15 +1,21 @@
 #include <common.hpp>
 
-void casanova::init() {
+unsigned long __stdcall casanova::init() {
+  console::attach(_t("casanova debug console"));
 
+  console::print(_t("casanova is now initializing"));
+
+  import_table::dump_table();
+
+  return 0;
 }
 
 bool __stdcall DllMain(void* instance, int reason, void* reserved) {
   if (reason != DLL_PROCESS_ATTACH)
     return false;
 
-  DisableThreadLibraryCalls((HMODULE)instance);
-  std::thread(casanova::init).detach();
+  casanova::utilities::disable_thread_calls(instance);
+  casanova::utilities::create_thread(casanova::init);
 
   return true;
 }
