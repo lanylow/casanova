@@ -8,9 +8,7 @@ void __fastcall casanova::hooks::cceglview_swapbuffers(game_sdk::CCEGLView* ecx,
   ImGui_ImplWin32_NewFrame();
   ImGui::NewFrame();
 
-  ImGui::Begin("test"); {
-
-  } ImGui::End();
+  ui::render();
 
   ImGui::EndFrame();
   ImGui::Render();
@@ -84,6 +82,10 @@ void __fastcall casanova::hooks::cceglview_pollevents(game_sdk::CCEGLView* ecx, 
           block = true;
       }
     }
+    else if (message.message == WM_KEYDOWN && message.wParam == VK_TAB) {
+      ui::opened = !ui::opened;
+    }
+
 
     if (!block)
       DispatchMessageA(&message);

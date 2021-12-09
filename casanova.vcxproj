@@ -72,8 +72,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>.\bint\debug\</OutDir>
-    <IntDir>.\bint\debug\int\</IntDir>
+    <OutDir>.\bin\debug\</OutDir>
+    <IntDir>.\bin\debug\int\</IntDir>
     <IncludePath>.\inc\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -153,6 +153,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\ui.cpp" />
+    <ClCompile Include="src\utilities\base_features.cpp" />
     <ClCompile Include="src\utilities\console.cpp" />
     <ClCompile Include="src\entry.cpp" />
     <ClCompile Include="src\hooks.cpp" />
@@ -160,6 +162,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\common.hpp" />
+    <ClInclude Include="inc\ui.hpp" />
+    <ClInclude Include="inc\utilities\base_features.hpp" />
     <ClInclude Include="inc\utilities\console.hpp" />
     <ClInclude Include="inc\entry.hpp" />
     <ClInclude Include="inc\utilities\game_sdk.hpp" />
