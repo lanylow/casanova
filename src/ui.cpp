@@ -39,6 +39,9 @@ void add_button(casanova::base_features::feature_def_t& feature) {
   ImGui::PopStyleColor();
 
   window->DrawList->AddRectFilled({ pos.x + ImGui::GetWindowWidth() - 7.f, pos.y + 2.f }, { pos.x + ImGui::GetWindowWidth() - 3.f, pos.y + 23.f }, feature.enabled ? ImColor(238, 119, 98, 255) : ImColor(83, 81, 80, 255));
+
+  if (ImGui::IsItemHovered())
+    ImGui::SetTooltip("%s", feature.desc.data());
 }
 
 void casanova::ui::render() {
