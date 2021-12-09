@@ -13,6 +13,7 @@ namespace casanova::base_features {
   };
 
   struct feature_def_t {
+    bool enabled = false;
     std::string_view name;
     std::string_view desc;
     std::vector<patch_def_t> patches;

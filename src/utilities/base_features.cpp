@@ -4,6 +4,7 @@ std::map<std::string_view, std::vector<casanova::base_features::feature_def_t>> 
   { "Bypass",
     {
       {
+        false,
         "Icons",
         "Unlocks all icons",
         {
@@ -21,6 +22,7 @@ std::map<std::string_view, std::vector<casanova::base_features::feature_def_t>> 
         { }
       },
       {
+        false,
         "Text Length",
         "Allows for unlimited text length in text inputs",
         {
@@ -32,6 +34,21 @@ std::map<std::string_view, std::vector<casanova::base_features::feature_def_t>> 
         },
         { }
       }
+    }
+  },
+  { "Creator",
+    {
+
+    }
+  },
+  { "Player",
+    {
+
+    }
+  },
+  { "Universal",
+    {
+
     }
   }
 };

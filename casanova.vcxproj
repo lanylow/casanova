@@ -166,6 +166,7 @@
     <ClInclude Include="inc\utilities\base_features.hpp" />
     <ClInclude Include="inc\utilities\console.hpp" />
     <ClInclude Include="inc\entry.hpp" />
+    <ClInclude Include="inc\utilities\font.hpp" />
     <ClInclude Include="inc\utilities\game_sdk.hpp" />
     <ClInclude Include="inc\hooks.hpp" />
     <ClInclude Include="inc\utilities\import_table.hpp" />

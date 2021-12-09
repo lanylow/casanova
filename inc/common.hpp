@@ -29,5 +29,6 @@
 #include "utilities/utilities.hpp"
 #include "utilities/game_sdk.hpp"
 #include "utilities/base_features.hpp"
+#include "utilities/font.hpp"
 #include "ui.hpp"
 #include "hooks.hpp"

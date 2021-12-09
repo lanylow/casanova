@@ -62,5 +62,8 @@
     <ClInclude Include="inc\utilities\base_features.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="inc\utilities\font.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

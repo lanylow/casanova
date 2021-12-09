@@ -123,5 +123,25 @@ void casanova::hooks::init_rendering(game_sdk::CCEGLView* gl) {
   ImGui_ImplWin32_Init(WindowFromDC(*(HDC*)((uintptr_t)gl->get_window() + 0x244)));
   ImGui_ImplOpenGL3_Init();
 
+  ImGuiIO& io = ImGui::GetIO();
+  ui::font = io.Fonts->AddFontFromMemoryTTF(font::data, sizeof(font::data), 22.f);
+
+  ImGuiStyle* style = &ImGui::GetStyle();
+
+  style->WindowRounding = 0.f;
+  style->FrameRounding = 0.f;
+  style->WindowPadding = ImVec2(0, 0);
+  style->FramePadding = ImVec2(0, 0);
+  style->WindowBorderSize = 0.f;
+  style->Alpha = 1.f;
+  style->ButtonTextAlign = ImVec2(0.050f, 0.5f);
+
+  style->Colors[ImGuiCol_WindowBg] = ImColor(41, 42, 42, 255);
+  style->Colors[ImGuiCol_FrameBg] = ImColor(41, 42, 42, 255);
+
+  style->Colors[ImGuiCol_Button] = ImColor(41, 42, 42, 255);
+  style->Colors[ImGuiCol_ButtonHovered] = ImColor(23, 23, 24, 255);
+  style->Colors[ImGuiCol_ButtonActive] = ImColor(10, 10, 10, 255);
+
   rendering_ready = true;
 }
