@@ -16,4 +16,9 @@ namespace casanova::utilities {
   inline auto get_function = [](std::string_view mod, std::string_view name) -> uintptr_t {
     return (uintptr_t)(_f(GetProcAddress)((HMODULE)get_module(mod), name.data()));
   };
+
+  template <typename t, typename... targs>
+  inline auto thiscall_function = [](std::string_view mod, std::string_view name, targs... args) -> t {
+    return reinterpret_cast<t(__thiscall*)(targs...)>(import_table::table[mod][name])(std::forward<targs>(args)...);
+  };
 }

@@ -24,6 +24,8 @@
 #include <MinHook.h>
 
 #include "entry.hpp"
-#include "console.hpp"
-#include "import_table.hpp"
-#include "utilities.hpp"
+#include "utilities/console.hpp"
+#include "utilities/import_table.hpp"
+#include "utilities/utilities.hpp"
+#include "utilities/game_sdk.hpp"
+#include "hooks.hpp"

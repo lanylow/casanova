@@ -18,10 +18,13 @@
     <ClCompile Include="src\entry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\console.cpp">
+    <ClCompile Include="src\utilities\console.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\import_table.cpp">
+    <ClCompile Include="src\utilities\import_table.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hooks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,13 +35,19 @@
     <ClInclude Include="inc\entry.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\utilities.hpp">
+    <ClInclude Include="inc\utilities\utilities.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\console.hpp">
+    <ClInclude Include="inc\utilities\console.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\import_table.hpp">
+    <ClInclude Include="inc\utilities\import_table.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\hooks.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\utilities\game_sdk.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

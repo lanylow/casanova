@@ -7,6 +7,8 @@ unsigned long __stdcall casanova::init() {
   import_table::dump_table();
 #endif
 
+  hooks::init();
+
   return 0;
 }
 
