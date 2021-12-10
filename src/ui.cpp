@@ -23,8 +23,10 @@ void add_button(casanova::base_features::feature_def_t& feature) {
   bool hovered, held;
   bool pressed = ImGui::ButtonBehavior(bb, id, &hovered, &held, ImGuiButtonFlags_None);
 
-  if (pressed)
+  if (pressed) {
     feature.enabled = !feature.enabled;
+    casanova::utilities::run_feature(feature);
+  }
 
   if (feature.enabled)
     ImGui::PushStyleColor(ImGuiCol_Text, ImColor(238, 119, 98, 255).Value);

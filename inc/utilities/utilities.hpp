@@ -21,4 +21,33 @@ namespace casanova::utilities {
   inline auto thiscall_function = [](std::string_view mod, std::string_view name, targs... args) -> t {
     return reinterpret_cast<t(__thiscall*)(targs...)>(import_table::table[mod][name])(std::forward<targs>(args)...);
   };
+
+  inline auto pattern_to_bytes = [](const char* pattern) -> std::vector<uint8_t> {
+    std::vector<uint8_t> bytes = { };
+
+    auto start = (char*)(pattern);
+    auto end = start + strlen(pattern);
+
+    for (auto current = start; current < end; ++current)
+      bytes.push_back((uint8_t)strtoul(current, &current, 16));
+
+    return bytes;
+  };
+
+  inline auto patch_memory = [](uintptr_t address, std::vector<uint8_t> bytes) {
+    unsigned long old;
+    VirtualProtect((void*)(address), bytes.size(), PAGE_EXECUTE_READWRITE, &old);
+
+    for (size_t i = 0; i < bytes.size(); i++)
+      *(uint8_t*)(address + i) = bytes[i];
+
+    VirtualProtect((void*)(address), bytes.size(), old, &old);
+  };
+
+  inline auto run_feature = [](base_features::feature_def_t& feature) -> void {
+    for (auto& patch : feature.patches) {
+      patch_memory(get_module(patch.library) + patch.offset,
+        feature.enabled ? pattern_to_bytes(patch.on_enable.data()) : pattern_to_bytes(patch.on_disable.data()));
+    }
+  };
 }

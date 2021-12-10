@@ -3,6 +3,7 @@
 namespace casanova::base_features {
   struct patch_def_t {
     uintptr_t offset;
+    std::string_view library;
     std::string_view on_enable;
     std::string_view on_disable;
   };
@@ -13,7 +14,7 @@ namespace casanova::base_features {
   };
 
   struct feature_def_t {
-    bool enabled = false;
+    bool enabled;
     std::string_view name;
     std::string_view desc;
     std::vector<patch_def_t> patches;

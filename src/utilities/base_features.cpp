@@ -10,11 +10,13 @@ std::map<std::string_view, std::vector<casanova::base_features::feature_def_t>> 
         {
           {
             0xC50A8,
+            "GeometryDash.exe",
             "B0 01 90 90 90",
             "E8 7A CD 19 00"
           },
           {
             0xC54BA,
+            "GeometryDash.exe",
             "B0 01 90 90 90",
             "E8 68 C9 19 00"
           }
@@ -28,6 +30,7 @@ std::map<std::string_view, std::vector<casanova::base_features::feature_def_t>> 
         {
           {
             0x21ACB,
+            "GeometryDash.exe",
             "EB 04",
             "7C 04"
           }
