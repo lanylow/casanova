@@ -9,6 +9,8 @@ namespace casanova::base_features {
   };
 
   struct ref_def_t {
+    bool on_enable;
+    std::string_view library;
     uintptr_t src;
     uintptr_t dest;
   };

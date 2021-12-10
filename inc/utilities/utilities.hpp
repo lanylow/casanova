@@ -44,10 +44,22 @@ namespace casanova::utilities {
     VirtualProtect((void*)(address), bytes.size(), old, &old);
   };
 
+  inline auto reference_memory = [](uintptr_t address, uintptr_t dest) -> void {
+    unsigned long old;
+    VirtualProtect((void*)(address), 4, PAGE_EXECUTE_READWRITE, &old);
+
+    *(uintptr_t*)(address) = dest;
+
+    VirtualProtect((void*)(address), 4, old, &old);
+  };
+
   inline auto run_feature = [](base_features::feature_def_t& feature) -> void {
-    for (auto& patch : feature.patches) {
+    for (auto& patch : feature.patches)
       patch_memory(get_module(patch.library) + patch.offset,
         feature.enabled ? pattern_to_bytes(patch.on_enable.data()) : pattern_to_bytes(patch.on_disable.data()));
-    }
+
+    for (auto& ref : feature.references)
+      if (ref.on_enable == feature.enabled)
+        reference_memory(get_module(ref.library) + ref.src, ref.dest);
   };
 }

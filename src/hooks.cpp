@@ -130,11 +130,12 @@ void casanova::hooks::init_rendering(game_sdk::CCEGLView* gl) {
 
   style->WindowRounding = 0.f;
   style->FrameRounding = 0.f;
-  style->WindowPadding = ImVec2(0, 0);
-  style->FramePadding = ImVec2(0, 0);
+  style->WindowPadding = { 0.f, 0.f };
+  style->FramePadding = { 0.f, 0.f };
   style->WindowBorderSize = 0.f;
   style->Alpha = 1.f;
-  style->ButtonTextAlign = ImVec2(0.050f, 0.5f);
+  style->ButtonTextAlign = { 0.050f, 0.5f };
+  style->ItemSpacing = { 0.f, 0.f };
 
   style->Colors[ImGuiCol_WindowBg] = ImColor(41, 42, 42, 255);
   style->Colors[ImGuiCol_FrameBg] = ImColor(41, 42, 42, 255);

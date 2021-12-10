@@ -7,6 +7,7 @@ void add_title_bar(const char* name) {
   ImGui::SetCursorPosX(100 - (ImGui::CalcTextSize(name).x / 2));
   ImGui::Text("%s", name);
   ImGui::PopFont();
+  ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 2.f);
 }
 
 void add_button(casanova::base_features::feature_def_t& feature) {
@@ -28,10 +29,7 @@ void add_button(casanova::base_features::feature_def_t& feature) {
     casanova::utilities::run_feature(feature);
   }
 
-  if (feature.enabled)
-    ImGui::PushStyleColor(ImGuiCol_Text, ImColor(238, 119, 98, 255).Value);
-  else
-    ImGui::PushStyleColor(ImGuiCol_Text, ImColor(255, 255, 255, 255).Value);
+  ImGui::PushStyleColor(ImGuiCol_Text, feature.enabled ? ImColor{ 238, 119, 98, 255 }.Value : ImColor{ 255, 255, 255, 255 }.Value);
 
   const ImU32 col = ImGui::GetColorU32((held && hovered) ? ImGuiCol_ButtonActive : hovered ? ImGuiCol_ButtonHovered : ImGuiCol_Button);
   ImGui::RenderNavHighlight(bb, id);
@@ -53,7 +51,7 @@ void casanova::ui::render() {
   int i = 0;
 
   for (auto& category : base_features::table) {
-    ImGui::SetNextWindowSize({ 200.f, 25.f + (category.second.size() * 25.f) + 7.f });
+    ImGui::SetNextWindowSize({ 200.f, 25.f + (category.second.size() * 25.f) });
     ImGui::SetNextWindowPos({ 10.f + i * 210.f, 10.f }, ImGuiCond_Once);
 
     ImGui::Begin(category.first.data(), nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar); {
