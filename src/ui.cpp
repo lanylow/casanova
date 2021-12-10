@@ -52,7 +52,7 @@ void casanova::ui::render() {
 
   for (auto& category : base_features::table) {
     ImGui::SetNextWindowSize({ 200.f, 25.f + (category.second.size() * 25.f) });
-    ImGui::SetNextWindowPos({ 10.f + i * 210.f, 10.f }, ImGuiCond_Once);
+    ImGui::SetNextWindowPos({ 5.f + i * 205.f, 5.f }, ImGuiCond_Once);
 
     ImGui::Begin(category.first.data(), nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar); {
       add_title_bar(category.first.data());
