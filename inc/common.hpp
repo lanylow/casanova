@@ -12,10 +12,10 @@
 #define _t(text) xorstr_(text)
 #define _f(func) LI_FN(func)
 
-#include <imgui.h>
-#include <imgui_internal.h>
-#include <imgui_impl_win32.h>
-#include <imgui_impl_opengl3.h>
+#include "../lib/imgui/imgui.h"
+#include "../lib/imgui/imgui_internal.h"
+#include "../lib/imgui/imgui_impl_win32.h"
+#include "../lib/imgui/imgui_impl_opengl3.h"
 
 #define FMT_HEADER_ONLY
 #include <fmt/format.h>
