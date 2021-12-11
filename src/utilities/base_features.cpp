@@ -714,7 +714,123 @@ std::map<std::string_view, std::vector<casanova::base_features::feature_def_t>> 
   },
   { "Universal",
     {
-
+      {
+        false, "AntiCheat Bypass", "Disables common anticheats",
+        {
+          { 0x202AAA, "GeometryDash.exe", "EB 2E", "74 2E" },
+          { 0x15FC2E, "GeometryDash.exe", "EB", "74" },
+          { 0x1FD335, "GeometryDash.exe", "EB", "74" },
+          { 0x1FD557, "GeometryDash.exe", "EB 0C", "74 0C" },
+          { 0x1FD742, "GeometryDash.exe", "C7 87 E0 02 00 00 01 00 00 00 C7 87 E4 02 00 00 00 00 00 00 90 90 90 90 90 90", "80 BF DD 02 00 00 00 0F 85 0A FE FF FF 80 BF 34 05 00 00 00 0F 84 FD FD FF FF" },
+          { 0x1FD756, "GeometryDash.exe", "90 90 90 90 90 90", "0F 84 FD FD FF FF" },
+          { 0x1FD79A, "GeometryDash.exe", "90 90 90 90 90 90", "0F 84 B9 FD FF FF" },
+          { 0x1FD7AF, "GeometryDash.exe", "90 90 90 90 90 90", "0F 85 A4 FD FF FF" },
+          { 0x20D3B3, "GeometryDash.exe", "90 90 90 90 90", "E8 58 04 00 00" },
+          { 0x1FF7A2, "GeometryDash.exe", "90 90", "74 6E" },
+          { 0x18B2B4, "GeometryDash.exe", "B0 01", "88 D8" },
+          { 0x20C4E6, "GeometryDash.exe", "E9 D7 00 00 00 90", "0F 85 D6 00 00 00" }
+        },
+          { }
+      },
+      {
+        false, "Force Visibility", "Sets all nodes to be visible",
+        {
+          { 0x60753, "libcocos2d.dll", "B0 01 90", "8A 45 08" },
+          { 0x60C5A, "libcocos2d.dll", "90 90 90 90 90 90", "0F 84 CB 00 00 00" }
+        },
+        { }
+      },
+      {
+        false, "No Rotation", "Locks all rotation at 0 degrees",
+        {
+          { 0x60554, "libcocos2d.dll", "90 90 90 90 90 90 90 90 90 90", "F3 0F 11 49 24 F3 0F 11 49 20" }
+        },
+        { }
+      },
+      {
+        false, "Free Window Resize", "Removes limits in place for window resizing",
+        {
+          { 0x11388B, "libcocos2d.dll", "90 90 90 90 90", "E8 B0 F3 FF FF" },
+          { 0x11339D, "libcocos2d.dll", "B9 FF FF FF 7F 90 90", "E8 EE F6 FF FF 8B C8" },
+          { 0x1133C0, "libcocos2d.dll", "48", "50" },
+          { 0x1133C6, "libcocos2d.dll", "48", "50" },
+          { 0x112536, "libcocos2d.dll", "EB 11 90", "50 6A 00" }
+        },
+        { }
+      },
+      {
+        false, "No Transition", "Shorterns scene transition time to 0s, doesn't work with the transition customiser",
+        {
+          { 0xA5424, "libcocos2d.dll", "90 90 90 90 90", "F3 0F 10 45 08" }
+        },
+        { }
+      },
+      {
+        false, "Safe Mode", "Disables progress, completion & verification of levels",
+        {
+          { 0x20A3D1, "GeometryDash.exe", "E9 7B 01 00 00 90", "0F 85 7A 01 00 00" },
+          { 0x1FF80B, "GeometryDash.exe", "90 90 90 90 90 90 90", "7D 0C E9 C2 FB FF FF" }
+        }
+      },
+      {
+        false, "Transparent BG", "Removes the blue filter from menu's backgrounds",
+        {
+          { 0x15A174, "GeometryDash.exe", "FF", "00" },
+          { 0x15A175, "GeometryDash.exe", "FF", "66" },
+          { 0x15A16F, "GeometryDash.exe", "FF", "FF" },
+          { 0x15A16D, "GeometryDash.exe", "90 B1", "80 C9" },
+          { 0x15891D, "GeometryDash.exe", "FF", "00" },
+          { 0x15891E, "GeometryDash.exe", "FF", "66" },
+          { 0x158917, "GeometryDash.exe", "FF", "FF" },
+          { 0x158915, "GeometryDash.exe", "90 B1", "80 C9" },
+          { 0x6F7FB, "GeometryDash.exe", "FF", "00" },
+          { 0x6F7FC, "GeometryDash.exe", "FF", "66" },
+          { 0x6F7F6, "GeometryDash.exe", "FF", "FF" },
+          { 0x6F7F4, "GeometryDash.exe", "90 B1", "80 C9" },
+          { 0x1979AD, "GeometryDash.exe", "FF", "00" },
+          { 0x1979AE, "GeometryDash.exe", "FF", "66" },
+          { 0x1979A7, "GeometryDash.exe", "FF", "FF" },
+          { 0x1979A5, "GeometryDash.exe", "90 B1", "80 C9" },
+          { 0x17DBC1, "GeometryDash.exe", "FF", "00" },
+          { 0x17DBC2, "GeometryDash.exe", "FF", "66" },
+          { 0x17DBBB, "GeometryDash.exe", "FF", "FF" },
+          { 0x17DBB9, "GeometryDash.exe", "90 B1", "80 C9" },
+          { 0x176032, "GeometryDash.exe", "FF", "00" },
+          { 0x176033, "GeometryDash.exe", "FF", "66" },
+          { 0x176036, "GeometryDash.exe", "FF", "FF" },
+          { 0x176034, "GeometryDash.exe", "90 B1", "80 C9" },
+          { 0x4DF7E, "GeometryDash.exe", "FF", "00" },
+          { 0x4DF7F, "GeometryDash.exe", "FF", "66" },
+          { 0x4DF78, "GeometryDash.exe", "FF", "FF" },
+          { 0x4DF76, "GeometryDash.exe", "90 B1", "80 C9" }
+        },
+        { }
+      },
+      {
+        false, "Transparent Lists", "Makes the menu lists transparent",
+        {
+          { 0x15C02C, "GeometryDash.exe", "00 00 00 40", "BF 72 3E FF" },
+          { 0x5C70A, "GeometryDash.exe", "60", "FF" },
+          { 0x5C6D9, "GeometryDash.exe", "20 20", "A1 58" },
+          { 0x5C6DC, "GeometryDash.exe", "20", "2C" },
+          { 0x5C6CF, "GeometryDash.exe", "40 40", "C2 72" },
+          { 0x5C6D2, "GeometryDash.exe", "40", "3E" }
+        }
+      },
+      {
+        false, "Fast Alt-Tab", "Disables savefile saving on minimize",
+        {
+          { 0x3D02E, "GeometryDash.exe", "90 90 90 90 90 90 90", "8B 03 8B CB FF 50 18" }
+        },
+        { }
+      },
+      {
+        false, "Allow Low Volume", "Removed snapping to 0.00 setting volume to 0.03",
+        {
+          { 0x1E5D7F, "GeometryDash.exe", "EB 08", "76 08" },
+          { 0x1DDEC1, "GeometryDash.exe", "EB 08", "76 08" }
+        }
+      }
     }
   }
 };
