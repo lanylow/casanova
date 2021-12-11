@@ -27,7 +27,7 @@
     <ClCompile Include="src\hooks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ui.cpp">
+    <ClCompile Include="src\ui\ui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\utilities\base_features.cpp">
@@ -49,6 +49,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lib\imgui\imgui_widgets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\ui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

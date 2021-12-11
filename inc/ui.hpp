@@ -5,4 +5,10 @@ namespace casanova::ui {
   inline ImFont* font = nullptr;
 
   void render();
+
+  void add_title_bar(const char* name);
+  bool add_button(const char* label, bool& enabled, const char* tooltip, ImVec2 pos, ImVec2 size);
+  bool add_button(const char* label, bool& enabled, const char* tooltip = nullptr);
+  void add_input_button(const char* checkbox_label, const char* input_label, const char* fmt, bool& enabled, double& value, const char* tooltip = nullptr);
+  void add_feature_button(casanova::base_features::feature_def_t& feature);
 }

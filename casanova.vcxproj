@@ -159,7 +159,8 @@
     <ClCompile Include="lib\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="lib\imgui\imgui_tables.cpp" />
     <ClCompile Include="lib\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="src\ui.cpp" />
+    <ClCompile Include="src\ui\ui.cpp" />
+    <ClCompile Include="src\ui\ui_widgets.cpp" />
     <ClCompile Include="src\utilities\base_features.cpp" />
     <ClCompile Include="src\utilities\console.cpp" />
     <ClCompile Include="src\entry.cpp" />
