@@ -7,9 +7,17 @@ void casanova::hacks::speedhack::update() {
   if (!config::speedhack::enabled) {
     scheduler->set_time_scale(1.f);
     channel->set_pitch(1.f);
+    casanova::hooks::set_speed(1.f);
   }
   else {
-    scheduler->set_time_scale((float)config::speedhack::multiplier);
+    if (config::speedhack::classic_mode) {
+      scheduler->set_time_scale(1.f);
+      casanova::hooks::set_speed((float)config::speedhack::multiplier);
+    }
+    else {
+      casanova::hooks::set_speed(1.f);
+      scheduler->set_time_scale((float)config::speedhack::multiplier);
+    }
     
     if (config::speedhack::audio)
       channel->set_pitch((float)config::speedhack::multiplier);

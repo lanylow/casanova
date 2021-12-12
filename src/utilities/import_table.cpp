@@ -17,5 +17,12 @@ std::map<std::string_view, std::map<std::string_view, uintptr_t>> casanova::impo
       { "ChannelControl::setPitch", casanova::utilities::get_function(_t("fmod.dll"), _t("?setPitch@ChannelControl@FMOD@@QAG?AW4FMOD_RESULT@@M@Z")) },
       { "ChannelControl::setVolume", casanova::utilities::get_function(_t("fmod.dll"), _t("?setVolume@ChannelControl@FMOD@@QAG?AW4FMOD_RESULT@@M@Z")) }
     }
+  },
+  { "kernel32",
+    {
+      { "GetTickCount", casanova::utilities::get_function(_t("kernel32.dll"), _t("GetTickCount")) },
+      { "GetTickCount64", casanova::utilities::get_function(_t("kernel32.dll"), _t("GetTickCount64")) },
+      { "QueryPerformanceCounter", casanova::utilities::get_function(_t("kernel32.dll"), _t("QueryPerformanceCounter")) }
+    }
   }
 };

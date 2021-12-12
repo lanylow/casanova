@@ -30,7 +30,7 @@ bool casanova::ui::add_button(const char* label, bool& enabled, const char* tool
 
   ImGui::PopStyleColor();
 
-  window->DrawList->AddRectFilled({ pos.x + size.x - 7.f, pos.y + 2.f }, { pos.x + size.x - 3.f, pos.y + 23.f }, enabled ? menu_accent : ImColor(83, 81, 80, 255));
+  window->DrawList->AddRectFilled({ pos.x + size.x - 6.f, pos.y + 4.f }, { pos.x + size.x - 3.f, pos.y + 22.f }, enabled ? menu_accent : ImColor(83, 81, 80, 255));
 
   if (ImGui::IsItemHovered() && tooltip != nullptr)
     ImGui::SetTooltip("%s", tooltip);

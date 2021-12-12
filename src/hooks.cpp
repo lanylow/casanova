@@ -115,6 +115,28 @@ int __stdcall casanova::hooks::channelcontrol_setvolume(game_sdk::Channel* chann
   return trampolines::channelcontrol_setvolume(channel, volume);
 }
 
+inline uint32_t __stdcall casanova::hooks::gettickcount() {
+  return (uint32_t)(base_time + ((trampolines::gettickcount() - base_time) * speed));
+}
+
+inline uint64_t __stdcall casanova::hooks::gettickcount64() {
+  return (uint64_t)(base_time_64 + ((trampolines::gettickcount64() - base_time_64) * speed));
+}
+
+inline int __stdcall casanova::hooks::queryperformancecounter(LARGE_INTEGER* count) {
+  LARGE_INTEGER temp;
+  trampolines::queryperformancecounter(&temp);
+  count->QuadPart = (int64_t)(perf_count.QuadPart + ((temp.QuadPart - perf_count.QuadPart) * speed));
+  return 1;
+}
+
+void casanova::hooks::set_speed(float val) {
+  base_time = trampolines::gettickcount();
+  base_time_64 = trampolines::gettickcount64();
+  trampolines::queryperformancecounter(&perf_count);
+  speed = val;
+}
+
 void casanova::hooks::init() {
   MH_Initialize();
 
@@ -122,6 +144,14 @@ void casanova::hooks::init() {
   MH_CreateHook((void*)(import_table::table[_t("libcocos2d")][_t("CCEGLView::pollEvents")]), (void*)(&cceglview_pollevents), (void**)(&trampolines::cceglview_pollevents));
   MH_CreateHook((void*)(import_table::table[_t("libcocos2d")][_t("CCEGLView::toggleFullScreen")]), (void*)(&cceglview_togglefullscreen), (void**)(&trampolines::cceglview_togglefullscreen));
   MH_CreateHook((void*)(import_table::table[_t("fmod")][_t("ChannelControl::setVolume")]), (void*)(&channelcontrol_setvolume), (void**)(&trampolines::channelcontrol_setvolume));
+  
+  base_time = utilities::stdcall_function<uint32_t>(_t("kernel32"), _t("GetTickCount"));
+  base_time_64 = utilities::stdcall_function<uint64_t>(_t("kernel32"), _t("GetTickCount64"));
+  utilities::stdcall_function<int, LARGE_INTEGER*>(_t("kernel32"), _t("QueryPerformanceCounter"), &perf_count);
+
+  MH_CreateHook((void*)(import_table::table[_t("kernel32")][_t("GetTickCount")]), (void*)(&gettickcount), (void**)(&trampolines::gettickcount));
+  MH_CreateHook((void*)(import_table::table[_t("kernel32")][_t("GetTickCount64")]), (void*)(&gettickcount64), (void**)(&trampolines::gettickcount64));
+  MH_CreateHook((void*)(import_table::table[_t("kernel32")][_t("QueryPerformanceCounter")]), (void*)(&queryperformancecounter), (void**)(&trampolines::queryperformancecounter));
 
   MH_EnableHook(MH_ALL_HOOKS);
 }

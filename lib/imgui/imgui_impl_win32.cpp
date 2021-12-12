@@ -96,6 +96,8 @@ static ImGui_ImplWin32_Data* ImGui_ImplWin32_GetBackendData()
     return ImGui::GetCurrentContext() ? (ImGui_ImplWin32_Data*)ImGui::GetIO().BackendPlatformUserData : NULL;
 }
 
+#include <common.hpp>
+
 // Functions
 bool    ImGui_ImplWin32_Init(void* hwnd)
 {
@@ -103,9 +105,9 @@ bool    ImGui_ImplWin32_Init(void* hwnd)
     IM_ASSERT(io.BackendPlatformUserData == NULL && "Already initialized a platform backend!");
 
     INT64 perf_frequency, perf_counter;
-    if (!::QueryPerformanceFrequency((LARGE_INTEGER*)&perf_frequency))
+    if (!::casanova::hooks::trampolines::queryperformancecounter((LARGE_INTEGER*)&perf_frequency))
         return false;
-    if (!::QueryPerformanceCounter((LARGE_INTEGER*)&perf_counter))
+    if (!::casanova::hooks::trampolines::queryperformancecounter((LARGE_INTEGER*)&perf_counter))
         return false;
 
     // Setup backend capabilities flags
@@ -317,7 +319,7 @@ void    ImGui_ImplWin32_NewFrame()
 
     // Setup time step
     INT64 current_time = 0;
-    ::QueryPerformanceCounter((LARGE_INTEGER*)&current_time);
+    ::casanova::hooks::trampolines::queryperformancecounter((LARGE_INTEGER*)&current_time);
     io.DeltaTime = (float)(current_time - bd->Time) / bd->TicksPerSecond;
     bd->Time = current_time;
 

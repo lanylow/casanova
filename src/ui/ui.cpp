@@ -35,11 +35,10 @@ void casanova::ui::render() {
   ImGui::Begin(_t("speedhack_wnd"), nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar); {
     add_title_bar(_t("Speedhack"));
 
-    if (add_input_button(_t("Enabled"), _t("speedhack_mult"), _t("%.1fx"), config::speedhack::enabled, config::speedhack::multiplier))
+    if (add_input_button(_t("Enabled"), _t("speedhack_mult"), _t("%.1fx"), config::speedhack::enabled, config::speedhack::multiplier) ||
+        add_button(_t("Speedhack Audio"), config::speedhack::audio) ||
+        add_button(_t("Classic Mode"), config::speedhack::classic_mode))
       hacks::speedhack::update();
-    if (add_button(_t("Speedhack Audio"), config::speedhack::audio))
-      hacks::speedhack::update();
-    add_button(_t("Classic Mode"), config::speedhack::classic_mode);
   } ImGui::End();
 
   ImGui::PopFont();
