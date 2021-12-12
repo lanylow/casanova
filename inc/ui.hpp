@@ -3,6 +3,7 @@
 namespace casanova::ui {
   inline bool opened = false;
   inline ImFont* font = nullptr;
+  inline ImColor menu_accent = { 247, 127, 190, 255 };
 
   void render();
 

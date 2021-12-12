@@ -2,7 +2,7 @@
 
 void casanova::ui::add_title_bar(const char* name) {
   ImVec2 pos = ImGui::GetCursorScreenPos();
-  ImGui::GetWindowDrawList()->AddRectFilled({ pos.x - 1, pos.y + 25 }, { pos.x + ImGui::GetWindowWidth() + 2, pos.y }, ImColor(238, 119, 98, 255));
+  ImGui::GetWindowDrawList()->AddRectFilled({ pos.x - 1, pos.y + 25 }, { pos.x + ImGui::GetWindowWidth() + 2, pos.y }, menu_accent);
   ImGui::SetCursorPosX(100 - (ImGui::CalcTextSize(name).x / 2));
   ImGui::Text("%s", name);
   ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 2.f);
@@ -21,7 +21,7 @@ bool casanova::ui::add_button(const char* label, bool& enabled, const char* tool
   bool hovered, held;
   bool pressed = ImGui::ButtonBehavior(bb, id, &hovered, &held, ImGuiButtonFlags_None);
 
-  ImGui::PushStyleColor(ImGuiCol_Text, enabled ? ImColor{ 238, 119, 98, 255 }.Value : ImColor{ 255, 255, 255, 255 }.Value);
+  ImGui::PushStyleColor(ImGuiCol_Text, enabled ? menu_accent.Value : ImColor{ 255, 255, 255, 255 }.Value);
 
   const ImU32 col = ImGui::GetColorU32((held && hovered) ? ImGuiCol_ButtonActive : hovered ? ImGuiCol_ButtonHovered : ImGuiCol_Button);
   ImGui::RenderNavHighlight(bb, id);
@@ -30,7 +30,7 @@ bool casanova::ui::add_button(const char* label, bool& enabled, const char* tool
 
   ImGui::PopStyleColor();
 
-  window->DrawList->AddRectFilled({ pos.x + size.x - 7.f, pos.y + 2.f }, { pos.x + size.x - 3.f, pos.y + 23.f }, enabled ? ImColor(238, 119, 98, 255) : ImColor(83, 81, 80, 255));
+  window->DrawList->AddRectFilled({ pos.x + size.x - 7.f, pos.y + 2.f }, { pos.x + size.x - 3.f, pos.y + 23.f }, enabled ? menu_accent : ImColor(83, 81, 80, 255));
 
   if (ImGui::IsItemHovered() && tooltip != nullptr)
     ImGui::SetTooltip("%s", tooltip);
