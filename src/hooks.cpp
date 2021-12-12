@@ -108,12 +108,20 @@ void __fastcall casanova::hooks::cceglview_togglefullscreen(game_sdk::CCEGLView*
   init_rendering(ecx);
 }
 
+int __stdcall casanova::hooks::channelcontrol_setvolume(game_sdk::Channel* channel, float volume) {
+  if (config::speedhack::enabled && config::speedhack::audio && config::speedhack::multiplier >= 0)
+    channel->set_pitch((float)config::speedhack::multiplier);
+
+  return trampolines::channelcontrol_setvolume(channel, volume);
+}
+
 void casanova::hooks::init() {
   MH_Initialize();
 
   MH_CreateHook((void*)(import_table::table[_t("libcocos2d")][_t("CCEGLView::swapBuffers")]), (void*)(&cceglview_swapbuffers), (void**)(&trampolines::cceglview_swapbuffers));
   MH_CreateHook((void*)(import_table::table[_t("libcocos2d")][_t("CCEGLView::pollEvents")]), (void*)(&cceglview_pollevents), (void**)(&trampolines::cceglview_pollevents));
   MH_CreateHook((void*)(import_table::table[_t("libcocos2d")][_t("CCEGLView::toggleFullScreen")]), (void*)(&cceglview_togglefullscreen), (void**)(&trampolines::cceglview_togglefullscreen));
+  MH_CreateHook((void*)(import_table::table[_t("fmod")][_t("ChannelControl::setVolume")]), (void*)(&channelcontrol_setvolume), (void**)(&trampolines::channelcontrol_setvolume));
 
   MH_EnableHook(MH_ALL_HOOKS);
 }

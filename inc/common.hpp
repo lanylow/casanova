@@ -30,5 +30,7 @@
 #include "utilities/utilities.hpp"
 #include "utilities/game_sdk.hpp"
 #include "utilities/font.hpp"
+#include "config.hpp"
+#include "hacks.hpp"
 #include "ui.hpp"
 #include "hooks.hpp"

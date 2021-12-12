@@ -39,20 +39,26 @@ bool casanova::ui::add_button(const char* label, bool& enabled, const char* tool
 }
 
 bool casanova::ui::add_button(const char* label, bool& enabled, const char* tooltip) {
-  return add_button(label, enabled, tooltip, ImGui::GetCursorScreenPos(), { 200.f, 25.f });
+  bool changed = add_button(label, enabled, tooltip, ImGui::GetCursorScreenPos(), { 200.f, 25.f });
+  if (changed)
+    enabled = !enabled;
+  return changed;
 }
 
-void casanova::ui::add_input_button(const char* checkbox_label, const char* input_label, const char* fmt, bool& enabled, double& value, const char* tooltip) {
+bool casanova::ui::add_input_button(const char* checkbox_label, const char* input_label, const char* fmt, bool& enabled, double& value, const char* tooltip) {
   ImVec2 cursor_pos = ImGui::GetCursorScreenPos();
+  double previous_val = value;
+  bool previous_enabled = enabled;
   ImGui::SetNextItemWidth(100.f);
   ImGui::InputDouble(input_label, &value, 0.0, 0.0, fmt);
   if (add_button(checkbox_label, enabled, tooltip, { cursor_pos.x + 100.f, cursor_pos.y }, { 100.f, 25.f }))
     enabled = !enabled;
+  ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 25.f);
+  return enabled != previous_enabled || value != previous_val;
 }
 
 void casanova::ui::add_feature_button(casanova::base_features::feature_def_t& feature) {
   if (add_button(feature.name.data(), feature.enabled, feature.desc.data())) {
-    feature.enabled = !feature.enabled;
     casanova::utilities::run_feature(feature);
   }
 }

@@ -159,6 +159,7 @@
     <ClCompile Include="lib\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="lib\imgui\imgui_tables.cpp" />
     <ClCompile Include="lib\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="src\hacks\speedhack.cpp" />
     <ClCompile Include="src\ui\ui.cpp" />
     <ClCompile Include="src\ui\ui_widgets.cpp" />
     <ClCompile Include="src\utilities\base_features.cpp" />
@@ -169,6 +170,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\common.hpp" />
+    <ClInclude Include="inc\config.hpp" />
+    <ClInclude Include="inc\hacks.hpp" />
     <ClInclude Include="inc\ui.hpp" />
     <ClInclude Include="inc\utilities\base_features.hpp" />
     <ClInclude Include="inc\utilities\console.hpp" />

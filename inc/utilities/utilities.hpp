@@ -22,6 +22,16 @@ namespace casanova::utilities {
     return reinterpret_cast<t(__thiscall*)(targs...)>(import_table::table[mod][name])(std::forward<targs>(args)...);
   };
 
+  template <typename t, typename... targs>
+  inline auto stdcall_function = [](std::string_view mod, std::string_view name, targs... args) -> t {
+    return reinterpret_cast<t(__stdcall*)(targs...)>(import_table::table[mod][name])(std::forward<targs>(args)...);
+  };
+
+  template <typename t, typename... targs>
+  inline auto call_function = [](std::string_view mod, std::string_view name, targs... args) -> t {
+    return reinterpret_cast<t(*)(targs...)>(import_table::table[mod][name])(std::forward<targs>(args)...);
+  };
+
   inline auto pattern_to_bytes = [](const char* pattern) -> std::vector<uint8_t> {
     std::vector<uint8_t> bytes = { };
 
