@@ -3,8 +3,16 @@
 namespace casanova::game_sdk {
   class CCEGLView {
   public:
+    static CCEGLView* shared_view() {
+      return utilities::call_function<CCEGLView*>(_t("libcocos2d"), _t("CCEGLView::sharedOpenGLView"));
+    }
+
     void* get_window() {
       return utilities::thiscall_function<void*, void*>(_t("libcocos2d"), _t("CCEGLView::getWindow"), this);
+    }
+
+    bool get_is_fullscreen() {
+      return utilities::thiscall_function<bool, game_sdk::CCEGLView*>(_t("libcocos2d"), _t("CCEGLView::getIsFullscreen"), this);
     }
   };
 
@@ -23,6 +31,25 @@ namespace casanova::game_sdk {
 
     CCScheduler* get_scheduler() {
       return utilities::thiscall_function<CCScheduler*, void*>(_t("libcocos2d"), _t("CCDirector::getScheduler"), this);
+    }
+  };
+
+  class CCApplication {
+  public:
+    static CCApplication* shared_application() {
+      return utilities::call_function<CCApplication*>(_t("libcocos2d"), _t("CCApplication::sharedApplication"));
+    }
+
+    void toggle_vertical_sync(bool enable) {
+      return utilities::thiscall_function<void, CCApplication*, bool>(_t("libcocos2d"), _t("CCApplication::toggleVerticalSync"), this, enable);
+    }
+
+    bool get_vertical_sync_enabled() {
+      return utilities::thiscall_function<bool, CCApplication*>(_t("libcocos2d"), _t("CCApplication::getVerticalSyncEnabled"), this);
+    }
+
+    void set_animation_interval(double interval) {
+      return utilities::thiscall_function<void, CCApplication*, double>(_t("libcocos2d"), _t("CCApplication::setAnimationInterval"), this, interval);
     }
   };
 

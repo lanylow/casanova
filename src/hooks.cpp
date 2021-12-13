@@ -24,6 +24,11 @@ void __fastcall casanova::hooks::cceglview_pollevents(game_sdk::CCEGLView* ecx, 
   if (!rendering_ready)
     return casanova::hooks::trampolines::cceglview_pollevents(ecx);
 
+  if (config::display::fullscreen_update) {
+    hacks::display::update_fullscreen();
+    config::display::fullscreen_update = false;
+  }
+
   MSG message;
   ImGuiIO& io = ImGui::GetIO();
   bool block = false;
@@ -181,6 +186,9 @@ void casanova::hooks::init_rendering(game_sdk::CCEGLView* gl) {
   style->Colors[ImGuiCol_Button] = ImColor(41, 42, 42, 255);
   style->Colors[ImGuiCol_ButtonHovered] = ImColor(23, 23, 24, 255);
   style->Colors[ImGuiCol_ButtonActive] = ImColor(10, 10, 10, 255);
+
+  config::display::fullscreen = game_sdk::CCEGLView::shared_view()->get_is_fullscreen();
+  config::display::vsync = game_sdk::CCApplication::shared_application()->get_vertical_sync_enabled();
 
   rendering_ready = true;
 }

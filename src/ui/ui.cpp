@@ -27,6 +27,15 @@ void casanova::ui::render() {
 
   ImGui::Begin(_t("fps_bypass_wnd"), nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar); {
     add_title_bar(_t("Display"));
+
+    if (add_input_button(_t("FPS Bypass"), _t("fps_val"), _t("%.0f FPS"), config::display::fps_bypass, config::display::fps_value))
+      hacks::display::update_fps_bypass();
+
+    if (add_button(_t("V-Sync"), config::display::vsync))
+      hacks::display::update_vsync();
+
+    if (add_button(_t("Fullscreen"), config::display::fullscreen))
+      config::display::fullscreen_update = true;
   } ImGui::End();
 
   ImGui::SetNextWindowSize({ 200.f, 25.f + (3 * 25.f) });
