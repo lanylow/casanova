@@ -1,7 +1,7 @@
 #include <common.hpp>
 
 void casanova::hacks::display::update_fullscreen() {
-  utilities::thiscall_function<void, game_sdk::CCEGLView*, bool>(_t("libcocos2d"), _t("CCEGLView::toggleFullScreen"), game_sdk::CCEGLView::shared_view(), config::display::fullscreen);
+  game_sdk::CCEGLView::shared_view()->toggle_fullscreen(config::display::fullscreen);
 }
 
 void casanova::hacks::display::update_vsync() {

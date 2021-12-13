@@ -14,6 +14,10 @@ namespace casanova::game_sdk {
     bool get_is_fullscreen() {
       return utilities::thiscall_function<bool, game_sdk::CCEGLView*>(_t("libcocos2d"), _t("CCEGLView::getIsFullscreen"), this);
     }
+
+    void toggle_fullscreen(bool enable) {
+      utilities::thiscall_function<void, game_sdk::CCEGLView*, bool>(_t("libcocos2d"), _t("CCEGLView::toggleFullScreen"), this, enable);
+    }
   };
 
   class CCScheduler {

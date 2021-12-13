@@ -46,21 +46,21 @@ namespace casanova::utilities {
 
   inline auto patch_memory = [](uintptr_t address, std::vector<uint8_t> bytes) {
     unsigned long old;
-    VirtualProtect((void*)(address), bytes.size(), PAGE_EXECUTE_READWRITE, &old);
+    _f(VirtualProtect)((void*)(address), bytes.size(), PAGE_EXECUTE_READWRITE, &old);
 
     for (size_t i = 0; i < bytes.size(); i++)
       *(uint8_t*)(address + i) = bytes[i];
 
-    VirtualProtect((void*)(address), bytes.size(), old, &old);
+    _f(VirtualProtect)((void*)(address), bytes.size(), old, &old);
   };
 
   inline auto reference_memory = [](uintptr_t base, uintptr_t src, uintptr_t dest) -> void {
     unsigned long old;
-    VirtualProtect((void*)(base + src), 4, PAGE_EXECUTE_READWRITE, &old);
+    _f(VirtualProtect)((void*)(base + src), 4, PAGE_EXECUTE_READWRITE, &old);
 
     *(uintptr_t*)(base + src) = base + dest;
 
-    VirtualProtect((void*)(base + src), 4, old, &old);
+    _f(VirtualProtect)((void*)(base + src), 4, old, &old);
   };
 
   inline auto run_feature = [](base_features::feature_def_t& feature) -> void {
