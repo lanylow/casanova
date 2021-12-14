@@ -1,43 +1,44 @@
 #include <common.hpp>
 
-void __fastcall casanova::hooks::cceglview_swapbuffers(game_sdk::CCEGLView* ecx, void* edx) {
-  if (!rendering_ready)
-    init_rendering(ecx);
-
-  ImGui_ImplOpenGL3_NewFrame();
-  ImGui_ImplWin32_NewFrame();
-  ImGui::NewFrame();
-
-  ui::render();
-
-  ImGui::EndFrame();
-  ImGui::Render();
-
-  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-  trampolines::cceglview_swapbuffers(ecx);
-}
-
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-void __fastcall casanova::hooks::cceglview_pollevents(game_sdk::CCEGLView* ecx, void* edx) {
-  if (!rendering_ready)
-    return casanova::hooks::trampolines::cceglview_pollevents(ecx);
+namespace casanova::hooks {
+  void __fastcall cceglview_swapbuffers(game_sdk::CCEGLView* ecx, void* edx) {
+    if (!rendering_ready)
+      init_rendering(ecx);
 
-  if (config::display::fullscreen_update) {
-    hacks::display::update_fullscreen();
-    config::display::fullscreen_update = false;
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplWin32_NewFrame();
+    ImGui::NewFrame();
+
+    ui::render();
+
+    ImGui::EndFrame();
+    ImGui::Render();
+
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+    trampolines::cceglview_swapbuffers(ecx);
   }
 
-  MSG message;
-  ImGuiIO& io = ImGui::GetIO();
-  bool block = false;
+  void __fastcall cceglview_pollevents(game_sdk::CCEGLView* ecx, void* edx) {
+    if (!rendering_ready)
+      return trampolines::cceglview_pollevents(ecx);
 
-  while (PeekMessageA(&message, nullptr, 0, 0, PM_REMOVE)) {
-    TranslateMessage(&message);
+    if (config::display::fullscreen_update) {
+      hacks::display::update_fullscreen();
+      config::display::fullscreen_update = false;
+    }
 
-    if (io.WantCaptureMouse) {
-      switch (message.message) {
+    MSG message;
+    ImGuiIO& io = ImGui::GetIO();
+    bool block = false;
+
+    while (PeekMessageA(&message, nullptr, 0, 0, PM_REMOVE)) {
+      TranslateMessage(&message);
+
+      if (io.WantCaptureMouse) {
+        switch (message.message) {
         case WM_LBUTTONDBLCLK:
         case WM_LBUTTONDOWN:
         case WM_LBUTTONUP:
@@ -72,11 +73,11 @@ void __fastcall casanova::hooks::cceglview_pollevents(game_sdk::CCEGLView* ecx, 
         case WM_XBUTTONDOWN:
         case WM_XBUTTONUP:
           block = true;
+        }
       }
-    }
 
-    if (io.WantCaptureKeyboard) {
-      switch (message.message) {
+      if (io.WantCaptureKeyboard) {
+        switch (message.message) {
         case WM_HOTKEY:
         case WM_KEYDOWN:
         case WM_KEYUP:
@@ -85,54 +86,55 @@ void __fastcall casanova::hooks::cceglview_pollevents(game_sdk::CCEGLView* ecx, 
         case WM_SYSKEYDOWN:
         case WM_SYSKEYUP:
           block = true;
+        }
       }
+      else if (message.message == WM_KEYDOWN && message.wParam == VK_TAB) {
+        ui::opened = !ui::opened;
+      }
+
+
+      if (!block)
+        DispatchMessageA(&message);
+
+      ImGui_ImplWin32_WndProcHandler(message.hwnd, message.message, message.wParam, message.lParam);
     }
-    else if (message.message == WM_KEYDOWN && message.wParam == VK_TAB) {
-      ui::opened = !ui::opened;
-    }
 
-
-    if (!block)
-      DispatchMessageA(&message);
-
-    ImGui_ImplWin32_WndProcHandler(message.hwnd, message.message, message.wParam, message.lParam);
+    trampolines::cceglview_pollevents(ecx);
   }
 
-  casanova::hooks::trampolines::cceglview_pollevents(ecx);
-}
+  void __fastcall cceglview_togglefullscreen(game_sdk::CCEGLView* ecx, void* edx, bool toggle) {
+    rendering_ready = false;
 
-void __fastcall casanova::hooks::cceglview_togglefullscreen(game_sdk::CCEGLView* ecx, void* edx, bool toggle) {
-  rendering_ready = false;
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplWin32_Shutdown();
+    ImGui::DestroyContext();
 
-  ImGui_ImplOpenGL3_Shutdown();
-  ImGui_ImplWin32_Shutdown();
-  ImGui::DestroyContext();
+    trampolines::cceglview_togglefullscreen(ecx, toggle);
 
-  casanova::hooks::trampolines::cceglview_togglefullscreen(ecx, toggle);
+    init_rendering(ecx);
+  }
 
-  init_rendering(ecx);
-}
+  int __stdcall channelcontrol_setvolume(game_sdk::Channel* channel, float volume) {
+    if (config::speedhack::enabled && config::speedhack::audio && config::speedhack::multiplier >= 0)
+      channel->set_pitch((float)config::speedhack::multiplier);
 
-int __stdcall casanova::hooks::channelcontrol_setvolume(game_sdk::Channel* channel, float volume) {
-  if (config::speedhack::enabled && config::speedhack::audio && config::speedhack::multiplier >= 0)
-    channel->set_pitch((float)config::speedhack::multiplier);
+    return trampolines::channelcontrol_setvolume(channel, volume);
+  }
 
-  return trampolines::channelcontrol_setvolume(channel, volume);
-}
+  inline uint32_t __stdcall gettickcount() {
+    return (uint32_t)(base_time + ((trampolines::gettickcount() - base_time) * speed));
+  }
 
-inline uint32_t __stdcall casanova::hooks::gettickcount() {
-  return (uint32_t)(base_time + ((trampolines::gettickcount() - base_time) * speed));
-}
+  inline uint64_t __stdcall gettickcount64() {
+    return (uint64_t)(base_time_64 + ((trampolines::gettickcount64() - base_time_64) * speed));
+  }
 
-inline uint64_t __stdcall casanova::hooks::gettickcount64() {
-  return (uint64_t)(base_time_64 + ((trampolines::gettickcount64() - base_time_64) * speed));
-}
-
-inline int __stdcall casanova::hooks::queryperformancecounter(LARGE_INTEGER* count) {
-  LARGE_INTEGER temp;
-  trampolines::queryperformancecounter(&temp);
-  count->QuadPart = (int64_t)(perf_count.QuadPart + ((temp.QuadPart - perf_count.QuadPart) * speed));
-  return 1;
+  inline int __stdcall queryperformancecounter(LARGE_INTEGER* count) {
+    LARGE_INTEGER temp;
+    trampolines::queryperformancecounter(&temp);
+    count->QuadPart = (int64_t)(perf_count.QuadPart + ((temp.QuadPart - perf_count.QuadPart) * speed));
+    return 1;
+  }
 }
 
 void casanova::hooks::set_speed(float val) {
@@ -142,21 +144,22 @@ void casanova::hooks::set_speed(float val) {
   speed = val;
 }
 
-void casanova::hooks::init() {
-  MH_Initialize();
+#define CreateHook(address, name) MH_CreateHook((void*)(address), (void*)(&name), (void**)(&trampolines::##name))
 
-  MH_CreateHook((void*)(import_table::table[_t("libcocos2d")][_t("CCEGLView::swapBuffers")]), (void*)(&cceglview_swapbuffers), (void**)(&trampolines::cceglview_swapbuffers));
-  MH_CreateHook((void*)(import_table::table[_t("libcocos2d")][_t("CCEGLView::pollEvents")]), (void*)(&cceglview_pollevents), (void**)(&trampolines::cceglview_pollevents));
-  MH_CreateHook((void*)(import_table::table[_t("libcocos2d")][_t("CCEGLView::toggleFullScreen")]), (void*)(&cceglview_togglefullscreen), (void**)(&trampolines::cceglview_togglefullscreen));
-  MH_CreateHook((void*)(import_table::table[_t("fmod")][_t("ChannelControl::setVolume")]), (void*)(&channelcontrol_setvolume), (void**)(&trampolines::channelcontrol_setvolume));
-  
+void casanova::hooks::init() {
   base_time = utilities::stdcall_function<uint32_t>(_t("kernel32"), _t("GetTickCount"));
   base_time_64 = utilities::stdcall_function<uint64_t>(_t("kernel32"), _t("GetTickCount64"));
   utilities::stdcall_function<int, LARGE_INTEGER*>(_t("kernel32"), _t("QueryPerformanceCounter"), &perf_count);
 
-  MH_CreateHook((void*)(import_table::table[_t("kernel32")][_t("GetTickCount")]), (void*)(&gettickcount), (void**)(&trampolines::gettickcount));
-  MH_CreateHook((void*)(import_table::table[_t("kernel32")][_t("GetTickCount64")]), (void*)(&gettickcount64), (void**)(&trampolines::gettickcount64));
-  MH_CreateHook((void*)(import_table::table[_t("kernel32")][_t("QueryPerformanceCounter")]), (void*)(&queryperformancecounter), (void**)(&trampolines::queryperformancecounter));
+  MH_Initialize();
+
+  CreateHook(import_table::table[_t("libcocos2d")][_t("CCEGLView::swapBuffers")], cceglview_swapbuffers);
+  CreateHook(import_table::table[_t("libcocos2d")][_t("CCEGLView::pollEvents")], cceglview_pollevents);
+  CreateHook(import_table::table[_t("libcocos2d")][_t("CCEGLView::toggleFullScreen")], cceglview_togglefullscreen);
+  CreateHook(import_table::table[_t("fmod")][_t("ChannelControl::setVolume")], channelcontrol_setvolume);
+  CreateHook(import_table::table[_t("kernel32")][_t("GetTickCount")], gettickcount);
+  CreateHook(import_table::table[_t("kernel32")][_t("GetTickCount64")], gettickcount64);
+  CreateHook(import_table::table[_t("kernel32")][_t("QueryPerformanceCounter")], queryperformancecounter);
 
   MH_EnableHook(MH_ALL_HOOKS);
 }
