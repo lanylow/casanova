@@ -8,7 +8,7 @@ namespace casanova::import_table {
       console::print(fmt::format(_t("Imports from module {}"), mod.first));
 
       for (auto& func : mod.second) {
-        console::print(fmt::format(_t("Function {} at {:#08x}"), func.first, func.second));
+        console::print(fmt::format(_t(" Function {} at {:#08x}"), func.first, func.second));
       }
     }
   };

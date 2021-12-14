@@ -121,19 +121,51 @@ namespace casanova::hooks {
     return trampolines::channelcontrol_setvolume(channel, volume);
   }
 
-  inline uint32_t __stdcall gettickcount() {
+  uint32_t __stdcall gettickcount() {
     return (uint32_t)(base_time + ((trampolines::gettickcount() - base_time) * speed));
   }
 
-  inline uint64_t __stdcall gettickcount64() {
+  uint64_t __stdcall gettickcount64() {
     return (uint64_t)(base_time_64 + ((trampolines::gettickcount64() - base_time_64) * speed));
   }
 
-  inline int __stdcall queryperformancecounter(LARGE_INTEGER* count) {
+  int __stdcall queryperformancecounter(LARGE_INTEGER* count) {
     LARGE_INTEGER temp;
     trampolines::queryperformancecounter(&temp);
     count->QuadPart = (int64_t)(perf_count.QuadPart + ((temp.QuadPart - perf_count.QuadPart) * speed));
     return 1;
+  }
+
+  int __fastcall menulayer_init(void* ecx, void* edx) {
+    return trampolines::menulayer_init(ecx);
+  }
+
+  void* __fastcall playlayer_create(void* ecx, void* edx) {
+    return trampolines::playlayer_create(ecx);
+  }
+
+  void __fastcall playlayer_onquit(void* ecx, void* edx) {
+    return trampolines::playlayer_onquit(ecx);
+  }
+
+  void* __fastcall playlayer_shownewbest(void* ecx, void* edx, char a2, float a3, int a4, char a5, char a6, char a7) {
+    return trampolines::playlayer_shownewbest(ecx, a2, a3, a4, a5, a6, a7);
+  }
+
+  void __fastcall editorpauselayer_onexiteditor(void* ecx, void* edx, void* a2) {
+    return trampolines::editorpauselayer_onexiteditor(ecx, a2);
+  }
+
+  void* __fastcall leveleditorlayer_create(void* ecx, void* edx) {
+    return trampolines::leveleditorlayer_create(ecx);
+  }
+
+  void __fastcall leveleditorlayer_addspecial(void* ecx, void* edx, void* object) {
+    return trampolines::leveleditorlayer_addspecial(ecx, object);
+  }
+
+  void __fastcall leveleditorlayer_removespecial(void* ecx, void* edx, void* object) {
+    return trampolines::leveleditorlayer_removespecial(ecx, object);
   }
 }
 
@@ -144,7 +176,9 @@ void casanova::hooks::set_speed(float val) {
   speed = val;
 }
 
-#define CreateHook(address, name) MH_CreateHook((void*)(address), (void*)(&name), (void**)(&trampolines::##name))
+#define CreateHook(address, name) \
+  console::print(fmt::format(_t("Creating hook from {:#08x} to {} ({:#08x})"), address, #name, (uintptr_t)(&name))); \
+  MH_CreateHook((void*)(address), (void*)(&name), (void**)(&trampolines::##name))
 
 void casanova::hooks::init() {
   base_time = utilities::stdcall_function<uint32_t>(_t("kernel32"), _t("GetTickCount"));
@@ -160,6 +194,14 @@ void casanova::hooks::init() {
   CreateHook(import_table::table[_t("kernel32")][_t("GetTickCount")], gettickcount);
   CreateHook(import_table::table[_t("kernel32")][_t("GetTickCount64")], gettickcount64);
   CreateHook(import_table::table[_t("kernel32")][_t("QueryPerformanceCounter")], queryperformancecounter);
+  CreateHook(utilities::get_module(_t("GeometryDash.exe")) + 0x1907B0, menulayer_init);
+  CreateHook(utilities::get_module(_t("GeometryDash.exe")) + 0x1FB6D0, playlayer_create);
+  CreateHook(utilities::get_module(_t("GeometryDash.exe")) + 0x20D810, playlayer_onquit);
+  CreateHook(utilities::get_module(_t("GeometryDash.exe")) + 0x1FE3A0, playlayer_shownewbest);
+  CreateHook(utilities::get_module(_t("GeometryDash.exe")) + 0x75660, editorpauselayer_onexiteditor);
+  CreateHook(utilities::get_module(_t("GeometryDash.exe")) + 0x15ED60, leveleditorlayer_create);
+  CreateHook(utilities::get_module(_t("GeometryDash.exe")) + 0x162650, leveleditorlayer_addspecial);
+  CreateHook(utilities::get_module(_t("GeometryDash.exe")) + 0x162FF0, leveleditorlayer_removespecial);
 
   MH_EnableHook(MH_ALL_HOOKS);
 }
