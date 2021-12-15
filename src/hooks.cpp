@@ -1,5 +1,9 @@
 #include <common.hpp>
 
+#define CreateHook(address, name) \
+  console::print(fmt::format(_t("Creating hook from {:#08x} to " #name " ({:#08x})"), address, (uintptr_t)(&name))); \
+  MH_CreateHook((void*)(address), (void*)(&name), (void**)(&trampolines::##name))
+
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 namespace casanova::hooks {
@@ -136,10 +140,6 @@ namespace casanova::hooks {
     return 1;
   }
 
-  int __fastcall menulayer_init(void* ecx, void* edx) {
-    return trampolines::menulayer_init(ecx);
-  }
-
   void* __fastcall playlayer_create(void* ecx, void* edx) {
     return trampolines::playlayer_create(ecx);
   }
@@ -167,6 +167,31 @@ namespace casanova::hooks {
   void __fastcall leveleditorlayer_removespecial(void* ecx, void* edx, void* object) {
     return trampolines::leveleditorlayer_removespecial(ecx, object);
   }
+
+  int __fastcall menulayer_init(void* ecx, void* edx) {
+    static auto once = []() {
+      CreateHook(import_table::table[_t("libcocos2d")][_t("CCEGLView::swapBuffers")], cceglview_swapbuffers);
+      CreateHook(import_table::table[_t("libcocos2d")][_t("CCEGLView::pollEvents")], cceglview_pollevents);
+      CreateHook(import_table::table[_t("libcocos2d")][_t("CCEGLView::toggleFullScreen")], cceglview_togglefullscreen);
+      CreateHook(import_table::table[_t("fmod")][_t("ChannelControl::setVolume")], channelcontrol_setvolume);
+      CreateHook(import_table::table[_t("kernel32")][_t("GetTickCount")], gettickcount);
+      CreateHook(import_table::table[_t("kernel32")][_t("GetTickCount64")], gettickcount64);
+      CreateHook(import_table::table[_t("kernel32")][_t("QueryPerformanceCounter")], queryperformancecounter);
+      CreateHook(utilities::get_module(_t("GeometryDash.exe")) + 0x1FB6D0, playlayer_create);
+      CreateHook(utilities::get_module(_t("GeometryDash.exe")) + 0x20D810, playlayer_onquit);
+      CreateHook(utilities::get_module(_t("GeometryDash.exe")) + 0x1FE3A0, playlayer_shownewbest);
+      CreateHook(utilities::get_module(_t("GeometryDash.exe")) + 0x75660, editorpauselayer_onexiteditor);
+      CreateHook(utilities::get_module(_t("GeometryDash.exe")) + 0x15ED60, leveleditorlayer_create);
+      CreateHook(utilities::get_module(_t("GeometryDash.exe")) + 0x162650, leveleditorlayer_addspecial);
+      CreateHook(utilities::get_module(_t("GeometryDash.exe")) + 0x162FF0, leveleditorlayer_removespecial);
+
+      MH_EnableHook(MH_ALL_HOOKS);
+
+      return true;
+    } ();
+
+    return trampolines::menulayer_init(ecx);
+  }
 }
 
 void casanova::hooks::set_speed(float val) {
@@ -176,10 +201,6 @@ void casanova::hooks::set_speed(float val) {
   speed = val;
 }
 
-#define CreateHook(address, name) \
-  console::print(fmt::format(_t("Creating hook from {:#08x} to {} ({:#08x})"), address, #name, (uintptr_t)(&name))); \
-  MH_CreateHook((void*)(address), (void*)(&name), (void**)(&trampolines::##name))
-
 void casanova::hooks::init() {
   base_time = utilities::stdcall_function<uint32_t>(_t("kernel32"), _t("GetTickCount"));
   base_time_64 = utilities::stdcall_function<uint64_t>(_t("kernel32"), _t("GetTickCount64"));
@@ -187,21 +208,7 @@ void casanova::hooks::init() {
 
   MH_Initialize();
 
-  CreateHook(import_table::table[_t("libcocos2d")][_t("CCEGLView::swapBuffers")], cceglview_swapbuffers);
-  CreateHook(import_table::table[_t("libcocos2d")][_t("CCEGLView::pollEvents")], cceglview_pollevents);
-  CreateHook(import_table::table[_t("libcocos2d")][_t("CCEGLView::toggleFullScreen")], cceglview_togglefullscreen);
-  CreateHook(import_table::table[_t("fmod")][_t("ChannelControl::setVolume")], channelcontrol_setvolume);
-  CreateHook(import_table::table[_t("kernel32")][_t("GetTickCount")], gettickcount);
-  CreateHook(import_table::table[_t("kernel32")][_t("GetTickCount64")], gettickcount64);
-  CreateHook(import_table::table[_t("kernel32")][_t("QueryPerformanceCounter")], queryperformancecounter);
   CreateHook(utilities::get_module(_t("GeometryDash.exe")) + 0x1907B0, menulayer_init);
-  CreateHook(utilities::get_module(_t("GeometryDash.exe")) + 0x1FB6D0, playlayer_create);
-  CreateHook(utilities::get_module(_t("GeometryDash.exe")) + 0x20D810, playlayer_onquit);
-  CreateHook(utilities::get_module(_t("GeometryDash.exe")) + 0x1FE3A0, playlayer_shownewbest);
-  CreateHook(utilities::get_module(_t("GeometryDash.exe")) + 0x75660, editorpauselayer_onexiteditor);
-  CreateHook(utilities::get_module(_t("GeometryDash.exe")) + 0x15ED60, leveleditorlayer_create);
-  CreateHook(utilities::get_module(_t("GeometryDash.exe")) + 0x162650, leveleditorlayer_addspecial);
-  CreateHook(utilities::get_module(_t("GeometryDash.exe")) + 0x162FF0, leveleditorlayer_removespecial);
 
   MH_EnableHook(MH_ALL_HOOKS);
 }

@@ -1,11 +1,9 @@
 #include <common.hpp>
 
 unsigned long __stdcall casanova::init() {
-#ifdef _CONSOLE
   console::attach(_t("casanova debug console"));
   console::print(_t("casanova is now initializing"));
   import_table::dump_table();
-#endif
 
   hooks::init();
 
