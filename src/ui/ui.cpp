@@ -50,5 +50,19 @@ void casanova::ui::render() {
       hacks::speedhack::update();
   } ImGui::End();
 
+  ImGui::SetNextWindowSize({ 200.f, 25.f + (1 * 25.f) });
+  ImGui::SetNextWindowPos({ 5.f + 6 * 205.f, 5.f }, ImGuiCond_Once);
+
+  ImGui::Begin(_t("casanova"), nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar); {
+    add_title_bar(_t("Casanova"));
+
+    if (add_button(_t("Discord Rich Presence"), config::discord_presence)) {
+      if (config::discord_presence)
+        update_presence = true;
+      else
+        discord::clear();
+    }
+  } ImGui::End();
+
   ImGui::PopFont();
 }

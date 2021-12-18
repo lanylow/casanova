@@ -5,6 +5,8 @@
 #include <map>
 #include <vector>
 #include <algorithm>
+#include <map>
+#include <unordered_map>
 
 #include <xorstr.hpp>
 #include <lazy_importer.hpp>
@@ -22,8 +24,13 @@
 #include <fmt/chrono.h>
 
 #include <MinHook.h>
+#include <discord_rpc.h>
 
-#include "entry.hpp"
+#define create_name(pre, post) pre##post
+#define create_pad_name(n) create_name(pad, n)
+#define pad(n) uint8_t create_pad_name(__LINE__)[n]
+
+#include "utilities/singleton.hpp"
 #include "utilities/console.hpp"
 #include "utilities/import_table.hpp"
 #include "utilities/base_features.hpp"
@@ -32,5 +39,7 @@
 #include "utilities/font.hpp"
 #include "config.hpp"
 #include "hacks.hpp"
+#include "discord.hpp"
 #include "ui.hpp"
 #include "hooks.hpp"
+#include "entry.hpp"

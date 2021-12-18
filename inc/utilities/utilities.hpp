@@ -32,6 +32,19 @@ namespace casanova::utilities {
     return reinterpret_cast<t(*)(targs...)>(import_table::table[mod][name])(std::forward<targs>(args)...);
   };
 
+  inline auto resolve_multilevel = [](uintptr_t start, std::vector<uintptr_t> offsets) -> uintptr_t {
+    auto i = offsets.begin();
+    uintptr_t* cur = (uintptr_t*)(start + *i);
+    std::advance(i, 1);
+
+    while (i != offsets.end()) {
+      cur = (uintptr_t*)(*cur + *i);
+      std::advance(i, 1);
+    }
+
+    return (uintptr_t)cur;
+  };
+
   inline auto pattern_to_bytes = [](const char* pattern) -> std::vector<uint8_t> {
     std::vector<uint8_t> bytes = { };
 

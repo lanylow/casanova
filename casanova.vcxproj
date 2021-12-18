@@ -160,6 +160,7 @@
     <ClCompile Include="lib\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="lib\imgui\imgui_tables.cpp" />
     <ClCompile Include="lib\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="src\discord.cpp" />
     <ClCompile Include="src\hacks\display.cpp" />
     <ClCompile Include="src\hacks\speedhack.cpp" />
     <ClCompile Include="src\ui\ui.cpp" />
@@ -173,6 +174,7 @@
   <ItemGroup>
     <ClInclude Include="inc\common.hpp" />
     <ClInclude Include="inc\config.hpp" />
+    <ClInclude Include="inc\discord.hpp" />
     <ClInclude Include="inc\hacks.hpp" />
     <ClInclude Include="inc\ui.hpp" />
     <ClInclude Include="inc\utilities\base_features.hpp" />
@@ -182,6 +184,7 @@
     <ClInclude Include="inc\utilities\game_sdk.hpp" />
     <ClInclude Include="inc\hooks.hpp" />
     <ClInclude Include="inc\utilities\import_table.hpp" />
+    <ClInclude Include="inc\utilities\singleton.hpp" />
     <ClInclude Include="inc\utilities\utilities.hpp" />
     <ClInclude Include="lib\imgui\imconfig.h" />
     <ClInclude Include="lib\imgui\imgui.h" />

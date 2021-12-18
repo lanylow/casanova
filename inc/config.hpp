@@ -1,6 +1,6 @@
 #pragma once
 
-namespace config {
+namespace casanova::config {
   namespace speedhack {
     inline bool enabled = false;
     inline double multiplier = 1.0;
@@ -15,4 +15,6 @@ namespace config {
     inline bool fullscreen = false;
     inline bool fullscreen_update = false;
   }
+
+  inline bool discord_presence = true;
 }

@@ -140,32 +140,80 @@ namespace casanova::hooks {
     return 1;
   }
 
-  void* __fastcall playlayer_create(void* ecx, void* edx) {
+  void* __fastcall playlayer_create(game_sdk::GJGameLevel* ecx, void* edx) {
+    if (player_state != game_sdk::GJPlayerState::editor)
+      update_timestamp = true;
+
+    game_level = ecx;
+    player_state = game_sdk::GJPlayerState::level;
+    update_presence = true;
+
     return trampolines::playlayer_create(ecx);
   }
 
   void __fastcall playlayer_onquit(void* ecx, void* edx) {
+    player_state = game_sdk::GJPlayerState::menu;
+    update_timestamp = true;
+    update_presence = true;
+
     return trampolines::playlayer_onquit(ecx);
   }
 
   void* __fastcall playlayer_shownewbest(void* ecx, void* edx, char a2, float a3, int a4, char a5, char a6, char a7) {
+    update_presence = true;
+
     return trampolines::playlayer_shownewbest(ecx, a2, a3, a4, a5, a6, a7);
   }
 
   void __fastcall editorpauselayer_onexiteditor(void* ecx, void* edx, void* a2) {
+    player_state = game_sdk::GJPlayerState::menu;
+    update_timestamp = true;
+    update_presence = true;
+
     return trampolines::editorpauselayer_onexiteditor(ecx, a2);
   }
 
-  void* __fastcall leveleditorlayer_create(void* ecx, void* edx) {
+  void* __fastcall leveleditorlayer_create(game_sdk::GJGameLevel* ecx, void* edx) {
+    if (player_state != game_sdk::GJPlayerState::level)
+      update_timestamp = true;
+
+    player_state = game_sdk::GJPlayerState::editor;
+    update_presence = true;
+    game_level = ecx;
+
     return trampolines::leveleditorlayer_create(ecx);
   }
 
+  void fix_object_count(void* layer) {
+    const uintptr_t offset = 0x3A0;
+
+    game_level->object_count_rand = *(int*)((uintptr_t)layer + (offset - (4 * 2)));
+    game_level->object_count_seed = *(int*)((uintptr_t)layer + (offset - 4));
+    game_level->object_count = *(int*)((uintptr_t)layer + offset);
+  }
+
   void __fastcall leveleditorlayer_addspecial(void* ecx, void* edx, void* object) {
-    return trampolines::leveleditorlayer_addspecial(ecx, object);
+    trampolines::leveleditorlayer_addspecial(ecx, object);
+
+    int object_count = *(int*)((uintptr_t)ecx + 0x3A0);
+    if (game_level->object_count >= object_count)
+      return;
+
+    fix_object_count(ecx);
+    
+    update_presence = true;
   }
 
   void __fastcall leveleditorlayer_removespecial(void* ecx, void* edx, void* object) {
-    return trampolines::leveleditorlayer_removespecial(ecx, object);
+    trampolines::leveleditorlayer_removespecial(ecx, object);
+
+    int object_count = *(int*)((uintptr_t)ecx + 0x3A0);
+    if (game_level->object_count < object_count)
+      return;
+
+    fix_object_count(ecx);
+
+    update_presence = true;
   }
 
   int __fastcall menulayer_init(void* ecx, void* edx) {
@@ -186,6 +234,15 @@ namespace casanova::hooks {
       CreateHook(utilities::get_module(_t("GeometryDash.exe")) + 0x162FF0, leveleditorlayer_removespecial);
 
       MH_EnableHook(MH_ALL_HOOKS);
+
+      discord::init();
+
+      char* username = (char*)utilities::resolve_multilevel(utilities::get_module(_t("GeometryDash.exe")), { 0x3222D8, 0x108 });
+      large_text = std::string(username);
+      update_presence = true;
+      update_timestamp = true;
+      current_timestamp = time(nullptr);
+      ready = true;
 
       return true;
     } ();
