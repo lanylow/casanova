@@ -30,7 +30,6 @@
 #define create_pad_name(n) create_name(pad, n)
 #define pad(n) uint8_t create_pad_name(__LINE__)[n]
 
-#include "utilities/singleton.hpp"
 #include "utilities/console.hpp"
 #include "utilities/import_table.hpp"
 #include "utilities/base_features.hpp"

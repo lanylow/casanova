@@ -115,7 +115,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CONSOLE</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -184,7 +184,6 @@
     <ClInclude Include="inc\utilities\game_sdk.hpp" />
     <ClInclude Include="inc\hooks.hpp" />
     <ClInclude Include="inc\utilities\import_table.hpp" />
-    <ClInclude Include="inc\utilities\singleton.hpp" />
     <ClInclude Include="inc\utilities\utilities.hpp" />
     <ClInclude Include="lib\imgui\imconfig.h" />
     <ClInclude Include="lib\imgui\imgui.h" />
