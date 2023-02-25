@@ -5,10 +5,6 @@ namespace casanova::utilities {
     DisableThreadLibraryCalls(reinterpret_cast<HMODULE>(instance)); 
   };
 
-  inline auto create_thread = [](void* func) -> void {
-    CreateThread(nullptr, 0, reinterpret_cast<LPTHREAD_START_ROUTINE>(func), nullptr, 0, nullptr);
-  };
-
   inline auto get_module = [](std::string_view name) -> uintptr_t {
     return reinterpret_cast<uintptr_t>(GetModuleHandleA(name.data()));
   };

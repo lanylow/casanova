@@ -7,7 +7,7 @@ namespace casanova {
   std::string text_from_key(std::string key);
   std::string format_level(std::string out);
   std::string get_diff_name();
-  unsigned long __stdcall init();
+  void init();
 
   inline bool update_presence, update_timestamp, ready;
   inline std::time_t current_timestamp;

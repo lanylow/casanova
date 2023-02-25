@@ -66,7 +66,7 @@ void casanova::update(std::string& details, std::string& large_text, std::string
   discord::update(details.c_str(), large_text.c_str(), small_text.c_str(), state.c_str(), small_image.c_str(), current_timestamp);
 }
 
-unsigned long __stdcall casanova::init() {
+void casanova::init() {
   console::attach("casanova debug console");
   console::print("casanova is now initializing");
   import_table::dump_table();
@@ -129,15 +129,13 @@ unsigned long __stdcall casanova::init() {
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }
-
-  return 0;
 }
 
 bool __stdcall DllMain(void* instance, int reason, void* reserved) {
   switch (reason) {
     case DLL_PROCESS_ATTACH: {
       casanova::utilities::disable_thread_calls(instance);
-      casanova::utilities::create_thread(casanova::init);
+      std::thread(casanova::init).detach();
       break;
     }
 
