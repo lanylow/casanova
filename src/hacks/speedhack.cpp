@@ -1,8 +1,8 @@
 #include <common.hpp>
 
 void casanova::hacks::speedhack::update() {
-  game_sdk::CCScheduler* scheduler = game_sdk::CCDirector::shared_director()->get_scheduler();
-  game_sdk::Channel* channel = game_sdk::Channel::get_channel();
+  sdk::CCScheduler* scheduler = sdk::CCDirector::shared_director()->get_scheduler();
+  sdk::Channel* channel = sdk::Channel::get_channel();
   float multiplier = static_cast<float>(config::speedhack::multiplier);
 
   if (!config::speedhack::enabled) {

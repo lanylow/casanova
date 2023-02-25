@@ -6,7 +6,7 @@
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-void __fastcall casanova::hooks::cceglview_swapbuffers(game_sdk::CCEGLView* ecx, void* edx) {
+void __fastcall casanova::hooks::cceglview_swapbuffers(sdk::CCEGLView* ecx, void* edx) {
   if (!rendering_ready)
     init_rendering(ecx);
 
@@ -24,7 +24,7 @@ void __fastcall casanova::hooks::cceglview_swapbuffers(game_sdk::CCEGLView* ecx,
   trampolines::cceglview_swapbuffers(ecx);
 }
 
-void __fastcall casanova::hooks::cceglview_pollevents(game_sdk::CCEGLView* ecx, void* edx) {
+void __fastcall casanova::hooks::cceglview_pollevents(sdk::CCEGLView* ecx, void* edx) {
   if (!rendering_ready)
     return trampolines::cceglview_pollevents(ecx);
 
@@ -105,7 +105,7 @@ void __fastcall casanova::hooks::cceglview_pollevents(game_sdk::CCEGLView* ecx, 
   trampolines::cceglview_pollevents(ecx);
 }
 
-void __fastcall casanova::hooks::cceglview_togglefullscreen(game_sdk::CCEGLView* ecx, void* edx, bool toggle) {
+void __fastcall casanova::hooks::cceglview_togglefullscreen(sdk::CCEGLView* ecx, void* edx, bool toggle) {
   rendering_ready = false;
 
   ImGui_ImplOpenGL3_Shutdown();
@@ -117,7 +117,7 @@ void __fastcall casanova::hooks::cceglview_togglefullscreen(game_sdk::CCEGLView*
   init_rendering(ecx);
 }
 
-int __stdcall casanova::hooks::channelcontrol_setvolume(game_sdk::Channel* channel, float volume) {
+int __stdcall casanova::hooks::channelcontrol_setvolume(sdk::Channel* channel, float volume) {
   if (config::speedhack::enabled && config::speedhack::audio && config::speedhack::multiplier >= 0)
     channel->set_pitch(static_cast<float>(config::speedhack::multiplier));
 
@@ -139,19 +139,19 @@ int __stdcall casanova::hooks::queryperformancecounter(LARGE_INTEGER* count) {
   return 1;
 }
 
-void* __fastcall casanova::hooks::playlayer_create(game_sdk::GJGameLevel* ecx, void* edx) {
-  if (discord_manager::player_state != game_sdk::GJPlayerState::editor)
+void* __fastcall casanova::hooks::playlayer_create(sdk::GJGameLevel* ecx, void* edx) {
+  if (discord_manager::player_state != sdk::GJPlayerState::editor)
     discord_manager::update_timestamp = true;
 
   discord_manager::game_level = ecx;
-  discord_manager::player_state = game_sdk::GJPlayerState::level;
+  discord_manager::player_state = sdk::GJPlayerState::level;
   discord_manager::update_presence = true;
 
   return trampolines::playlayer_create(ecx);
 }
 
 void __fastcall casanova::hooks::playlayer_onquit(void* ecx, void* edx) {
-  discord_manager::player_state = game_sdk::GJPlayerState::menu;
+  discord_manager::player_state = sdk::GJPlayerState::menu;
   discord_manager::update_timestamp = true;
   discord_manager::update_presence = true;
 
@@ -165,18 +165,18 @@ void* __fastcall casanova::hooks::playlayer_shownewbest(void* ecx, void* edx, ch
 }
 
 void __fastcall casanova::hooks::editorpauselayer_onexiteditor(void* ecx, void* edx, void* a2) {
-  discord_manager::player_state = game_sdk::GJPlayerState::menu;
+  discord_manager::player_state = sdk::GJPlayerState::menu;
   discord_manager::update_timestamp = true;
   discord_manager::update_presence = true;
 
   return trampolines::editorpauselayer_onexiteditor(ecx, a2);
 }
 
-void* __fastcall casanova::hooks::leveleditorlayer_create(game_sdk::GJGameLevel* ecx, void* edx) {
-  if (discord_manager::player_state != game_sdk::GJPlayerState::level)
+void* __fastcall casanova::hooks::leveleditorlayer_create(sdk::GJGameLevel* ecx, void* edx) {
+  if (discord_manager::player_state != sdk::GJPlayerState::level)
     discord_manager::update_timestamp = true;
 
-  discord_manager::player_state = game_sdk::GJPlayerState::editor;
+  discord_manager::player_state = sdk::GJPlayerState::editor;
   discord_manager::update_presence = true;
   discord_manager::game_level = ecx;
 
@@ -259,7 +259,7 @@ void casanova::hooks::init() {
   MH_EnableHook(MH_ALL_HOOKS);
 }
 
-void casanova::hooks::init_rendering(game_sdk::CCEGLView* gl) {
+void casanova::hooks::init_rendering(sdk::CCEGLView* gl) {
   ImGui::CreateContext();
   ImGui_ImplWin32_Init(WindowFromDC(*reinterpret_cast<HDC*>(reinterpret_cast<uintptr_t>(gl->get_window()) + 0x244)));
   ImGui_ImplOpenGL3_Init();
@@ -285,8 +285,8 @@ void casanova::hooks::init_rendering(game_sdk::CCEGLView* gl) {
   style->Colors[ImGuiCol_ButtonHovered] = ImColor(23, 23, 24, 255);
   style->Colors[ImGuiCol_ButtonActive] = ImColor(10, 10, 10, 255);
 
-  config::display::fullscreen = game_sdk::CCEGLView::shared_view()->get_is_fullscreen();
-  config::display::vsync = game_sdk::CCApplication::shared_application()->get_vertical_sync_enabled();
+  config::display::fullscreen = sdk::CCEGLView::shared_view()->get_is_fullscreen();
+  config::display::vsync = sdk::CCApplication::shared_application()->get_vertical_sync_enabled();
 
   rendering_ready = true;
 }

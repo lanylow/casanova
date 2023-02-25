@@ -28,7 +28,7 @@
 #include "utilities/import_table.hpp"
 #include "utilities/base_features.hpp"
 #include "utilities/utilities.hpp"
-#include "utilities/game_sdk.hpp"
+#include "utilities/sdk.hpp"
 #include "utilities/font.hpp"
 #include "config.hpp"
 #include "hacks.hpp"

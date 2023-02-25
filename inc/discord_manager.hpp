@@ -10,7 +10,7 @@ namespace casanova::discord_manager {
   inline bool update_presence, update_timestamp;
   inline std::time_t current_timestamp;
   inline std::string large_text;
-  inline game_sdk::GJGameLevel* game_level = nullptr;
-  inline game_sdk::GDLevel level;
-  inline game_sdk::GJPlayerState player_state = game_sdk::GJPlayerState::menu;
+  inline sdk::GJGameLevel* game_level = nullptr;
+  inline sdk::GDLevel level;
+  inline sdk::GJPlayerState player_state = sdk::GJPlayerState::menu;
 }

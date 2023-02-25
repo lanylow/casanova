@@ -1,6 +1,6 @@
 #pragma once
 
-namespace casanova::game_sdk {
+namespace casanova::sdk {
   enum class GJLevelType {
     local = 1,
     editor,
@@ -36,8 +36,8 @@ namespace casanova::game_sdk {
   public:
     static CCEGLView* shared_view() { return utilities::call_function<CCEGLView*>("libcocos2d", "CCEGLView::sharedOpenGLView"); }
     void* get_window() { return utilities::thiscall_function<void*, void*>("libcocos2d", "CCEGLView::getWindow", this); }
-    bool get_is_fullscreen() { return utilities::thiscall_function<bool, game_sdk::CCEGLView*>("libcocos2d", "CCEGLView::getIsFullscreen", this); }
-    void toggle_fullscreen(bool enable) { utilities::thiscall_function<void, game_sdk::CCEGLView*, bool>("libcocos2d", "CCEGLView::toggleFullScreen", this, enable); }
+    bool get_is_fullscreen() { return utilities::thiscall_function<bool, sdk::CCEGLView*>("libcocos2d", "CCEGLView::getIsFullscreen", this); }
+    void toggle_fullscreen(bool enable) { utilities::thiscall_function<void, sdk::CCEGLView*, bool>("libcocos2d", "CCEGLView::toggleFullScreen", this, enable); }
   };
 
   class CCScheduler {
@@ -218,43 +218,5 @@ namespace casanova::game_sdk {
     bool is_demon = false;
   };
 
-  inline bool parse_game_level(GJGameLevel* game_level, GDLevel& level) {
-    int id = game_level->level_id;
-    GJLevelType type = game_level->level_type;
-
-    if (id == level.level_id && type != GJLevelType::editor)
-      return true;
-
-    level.level_id = id;
-    level.stars = game_level->stars;
-    level.name = game_level->level_name;
-    level.is_demon = static_cast<bool>(game_level->demon);
-    level.is_auto = game_level->auto_level;
-
-    if (type == GJLevelType::local) {
-      level.author = "RobTop";
-      level.difficulty = static_cast<GJDifficulty>(game_level->difficulty);
-
-      if (level.difficulty == GJDifficulty::demon)
-        level.demon_difficulty = GJDemonDifficulty::easy;
-    }
-    else {
-      level.author = game_level->user_name;
-      level.difficulty = static_cast<GJDifficulty>(game_level->ratings_sum / 10);
-
-      if (level.is_demon) {
-        switch (game_level->demon_difficulty) {
-          case 3: level.demon_difficulty = GJDemonDifficulty::easy; break;
-          case 4: level.demon_difficulty = GJDemonDifficulty::medium; break;
-          case 5: level.demon_difficulty = GJDemonDifficulty::insane; break;
-          case 6: level.demon_difficulty = GJDemonDifficulty::extreme; break;
-          case 0: 
-          case 1: 
-          case 2: level.demon_difficulty = GJDemonDifficulty::hard; break;
-        }
-      }
-    }
-
-    return true;
-  }
+  bool parse_game_level(GJGameLevel* game_level, GDLevel& level);
 }

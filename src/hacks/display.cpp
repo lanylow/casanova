@@ -1,7 +1,7 @@
 #include <common.hpp>
 
 void casanova::hacks::display::update_fullscreen() {
-  game_sdk::CCEGLView::shared_view()->toggle_fullscreen(config::display::fullscreen);
+  sdk::CCEGLView::shared_view()->toggle_fullscreen(config::display::fullscreen);
 }
 
 void casanova::hacks::display::update_vsync() {
@@ -10,11 +10,11 @@ void casanova::hacks::display::update_vsync() {
     update_fps_bypass();
   }
 
-  game_sdk::CCApplication::shared_application()->toggle_vertical_sync(config::display::vsync);
+  sdk::CCApplication::shared_application()->toggle_vertical_sync(config::display::vsync);
 }
 
 void casanova::hacks::display::update_fps_bypass() {
-  game_sdk::CCApplication* application = game_sdk::CCApplication::shared_application();
+  sdk::CCApplication* application = sdk::CCApplication::shared_application();
 
   if (config::display::fps_bypass) {
     config::display::vsync = false;

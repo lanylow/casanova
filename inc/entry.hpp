@@ -1,6 +1,6 @@
 #pragma once
 
-#include "utilities/game_sdk.hpp"
+#include "utilities/sdk.hpp"
 
 namespace casanova {
   void init();

@@ -66,6 +66,9 @@
     <ClCompile Include="src\discord_manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\utilities\sdk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\common.hpp">
@@ -86,7 +89,7 @@
     <ClInclude Include="inc\hooks.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\utilities\game_sdk.hpp">
+    <ClInclude Include="inc\utilities\sdk.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\ui.hpp">

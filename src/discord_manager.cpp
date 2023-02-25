@@ -6,24 +6,24 @@ std::string casanova::discord_manager::get_diff_name() {
 
   if (level.is_demon) {
     switch (level.demon_difficulty) {
-    case game_sdk::GJDemonDifficulty::easy: return "easy_demon";
-    case game_sdk::GJDemonDifficulty::medium: return "medium_demon";
-    case game_sdk::GJDemonDifficulty::insane: return "insane_demon";
-    case game_sdk::GJDemonDifficulty::extreme: return "extreme_demon";
+    case sdk::GJDemonDifficulty::easy: return "easy_demon";
+    case sdk::GJDemonDifficulty::medium: return "medium_demon";
+    case sdk::GJDemonDifficulty::insane: return "insane_demon";
+    case sdk::GJDemonDifficulty::extreme: return "extreme_demon";
     default:
-    case game_sdk::GJDemonDifficulty::hard: return "hard_demon";
+    case sdk::GJDemonDifficulty::hard: return "hard_demon";
     }
   }
 
   switch (level.difficulty) {
-  case game_sdk::GJDifficulty::easy: return "easy";
-  case game_sdk::GJDifficulty::normal: return "normal";
-  case game_sdk::GJDifficulty::hard: return "hard";
-  case game_sdk::GJDifficulty::harder: return "harder";
-  case game_sdk::GJDifficulty::insane: return "insane";
-  case game_sdk::GJDifficulty::demon: return "hard_demon";
+  case sdk::GJDifficulty::easy: return "easy";
+  case sdk::GJDifficulty::normal: return "normal";
+  case sdk::GJDifficulty::hard: return "hard";
+  case sdk::GJDifficulty::harder: return "harder";
+  case sdk::GJDifficulty::insane: return "insane";
+  case sdk::GJDifficulty::demon: return "hard_demon";
   default:
-  case game_sdk::GJDifficulty::na: return "na";
+  case sdk::GJDifficulty::na: return "na";
   }
 }
 
@@ -72,11 +72,11 @@ void casanova::discord_manager::run() {
       std::string details, state, small_text, small_image;
 
       switch (player_state) {
-      case game_sdk::GJPlayerState::level: {
-        game_sdk::parse_game_level(game_level, level);
-        game_sdk::GJLevelType type = game_level->level_type;
+      case sdk::GJPlayerState::level: {
+        sdk::parse_game_level(game_level, level);
+        sdk::GJLevelType type = game_level->level_type;
 
-        if (type == game_sdk::GJLevelType::editor) {
+        if (type == sdk::GJLevelType::editor) {
           details = format_level("Playtesting a level");
           state = "";
           small_text = "";
@@ -92,8 +92,8 @@ void casanova::discord_manager::run() {
         break;
       }
 
-      case game_sdk::GJPlayerState::editor: {
-        game_sdk::parse_game_level(game_level, level);
+      case sdk::GJPlayerState::editor: {
+        sdk::parse_game_level(game_level, level);
 
         details = format_level("Editing a level");
         state = format_level("{objects} objects");
@@ -103,7 +103,7 @@ void casanova::discord_manager::run() {
         break;
       }
 
-      case game_sdk::GJPlayerState::menu: {
+      case sdk::GJPlayerState::menu: {
         details = "Idle";
         state = "";
         small_text = "";

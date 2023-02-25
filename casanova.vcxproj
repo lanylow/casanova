@@ -171,6 +171,7 @@
     <ClCompile Include="src\entry.cpp" />
     <ClCompile Include="src\hooks.cpp" />
     <ClCompile Include="src\utilities\import_table.cpp" />
+    <ClCompile Include="src\utilities\sdk.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\common.hpp" />
@@ -183,7 +184,7 @@
     <ClInclude Include="inc\utilities\console.hpp" />
     <ClInclude Include="inc\entry.hpp" />
     <ClInclude Include="inc\utilities\font.hpp" />
-    <ClInclude Include="inc\utilities\game_sdk.hpp" />
+    <ClInclude Include="inc\utilities\sdk.hpp" />
     <ClInclude Include="inc\hooks.hpp" />
     <ClInclude Include="inc\utilities\import_table.hpp" />
     <ClInclude Include="inc\utilities\utilities.hpp" />
