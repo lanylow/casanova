@@ -8,12 +8,6 @@
 #include <map>
 #include <unordered_map>
 
-#include <xorstr.hpp>
-#include <lazy_importer.hpp>
-
-#define _t(text) xorstr_(text)
-#define _f(func) LI_FN(func)
-
 #include "../lib/imgui/imgui.h"
 #include "../lib/imgui/imgui_internal.h"
 #include "../lib/imgui/imgui_impl_win32.h"

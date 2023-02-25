@@ -21,11 +21,11 @@ void casanova::hacks::display::update_fps_bypass() {
     update_vsync();
 
     double multiplier = 1.0 / config::display::fps_value;
-    *(double*)(*(uintptr_t*)(utilities::get_module(_t("libcocos2d.dll")) + 0x19EEA8) + 0x80) = multiplier;
+    *reinterpret_cast<double*>(*reinterpret_cast<uintptr_t*>(utilities::get_module("libcocos2d.dll") + 0x19EEA8) + 0x80) = multiplier;
     application->set_animation_interval(multiplier);
   }
   else {
-    *(double*)(*(uintptr_t*)(utilities::get_module(_t("libcocos2d.dll")) + 0x19EEA8) + 0x80) = (double)0x3F91111111111111;
+    *reinterpret_cast<double*>(*reinterpret_cast<uintptr_t*>(utilities::get_module("libcocos2d.dll") + 0x19EEA8) + 0x80) = (double)0x3F91111111111111;
     application->set_animation_interval(0.01666666666666667);
   }
 }

@@ -3,7 +3,7 @@
 void casanova::discord::init() {
   DiscordEventHandlers event_handlers;
   std::memset(&event_handlers, 0, sizeof(event_handlers));
-  Discord_Initialize(_t("820941087467896834"), &event_handlers, 1, _t("322170"));
+  Discord_Initialize("820941087467896834", &event_handlers, 1, "322170");
 }
 
 void casanova::discord::update(const char* details, const char* large_text, const char* small_text, const char* state, const char* small_image, std::time_t timestamp) {
@@ -15,10 +15,10 @@ void casanova::discord::update(const char* details, const char* large_text, cons
 
   presence.details = details;
   presence.startTimestamp = timestamp;
-  presence.largeImageKey = _t("logo");
+  presence.largeImageKey = "logo";
   presence.largeImageText = large_text;
 
-  if (std::strcmp(small_image, _t("none")) != 0) {
+  if (std::strcmp(small_image, "none") != 0) {
     presence.smallImageKey = small_image;
     presence.smallImageText = small_text;
   }

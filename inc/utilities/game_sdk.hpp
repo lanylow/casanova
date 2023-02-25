@@ -34,35 +34,35 @@ namespace casanova::game_sdk {
 
   class CCEGLView {
   public:
-    static CCEGLView* shared_view() { return utilities::call_function<CCEGLView*>(_t("libcocos2d"), _t("CCEGLView::sharedOpenGLView")); }
-    void* get_window() { return utilities::thiscall_function<void*, void*>(_t("libcocos2d"), _t("CCEGLView::getWindow"), this); }
-    bool get_is_fullscreen() { return utilities::thiscall_function<bool, game_sdk::CCEGLView*>(_t("libcocos2d"), _t("CCEGLView::getIsFullscreen"), this); }
-    void toggle_fullscreen(bool enable) { utilities::thiscall_function<void, game_sdk::CCEGLView*, bool>(_t("libcocos2d"), _t("CCEGLView::toggleFullScreen"), this, enable); }
+    static CCEGLView* shared_view() { return utilities::call_function<CCEGLView*>("libcocos2d", "CCEGLView::sharedOpenGLView"); }
+    void* get_window() { return utilities::thiscall_function<void*, void*>("libcocos2d", "CCEGLView::getWindow", this); }
+    bool get_is_fullscreen() { return utilities::thiscall_function<bool, game_sdk::CCEGLView*>("libcocos2d", "CCEGLView::getIsFullscreen", this); }
+    void toggle_fullscreen(bool enable) { utilities::thiscall_function<void, game_sdk::CCEGLView*, bool>("libcocos2d", "CCEGLView::toggleFullScreen", this, enable); }
   };
 
   class CCScheduler {
   public:
-    void set_time_scale(float time_scale) { utilities::thiscall_function<void, void*, float>(_t("libcocos2d"), _t("CCScheduler::setTimeScale"), this, time_scale); }
+    void set_time_scale(float time_scale) { utilities::thiscall_function<void, void*, float>("libcocos2d", "CCScheduler::setTimeScale", this, time_scale); }
   };
 
   class CCDirector {
   public:
-    static CCDirector* shared_director() { return utilities::call_function<CCDirector*>(_t("libcocos2d"), _t("CCDirector::sharedDirector")); }
-    CCScheduler* get_scheduler() { return utilities::thiscall_function<CCScheduler*, void*>(_t("libcocos2d"), _t("CCDirector::getScheduler"), this); }
+    static CCDirector* shared_director() { return utilities::call_function<CCDirector*>("libcocos2d", "CCDirector::sharedDirector"); }
+    CCScheduler* get_scheduler() { return utilities::thiscall_function<CCScheduler*, void*>("libcocos2d", "CCDirector::getScheduler", this); }
   };
 
   class CCApplication {
   public:
-    static CCApplication* shared_application() { return utilities::call_function<CCApplication*>(_t("libcocos2d"), _t("CCApplication::sharedApplication")); }
-    void toggle_vertical_sync(bool enable) { return utilities::thiscall_function<void, CCApplication*, bool>(_t("libcocos2d"), _t("CCApplication::toggleVerticalSync"), this, enable); }
-    bool get_vertical_sync_enabled() { return utilities::thiscall_function<bool, CCApplication*>(_t("libcocos2d"), _t("CCApplication::getVerticalSyncEnabled"), this); }
-    void set_animation_interval(double interval) { return utilities::thiscall_function<void, CCApplication*, double>(_t("libcocos2d"), _t("CCApplication::setAnimationInterval"), this, interval); }
+    static CCApplication* shared_application() { return utilities::call_function<CCApplication*>("libcocos2d", "CCApplication::sharedApplication"); }
+    void toggle_vertical_sync(bool enable) { return utilities::thiscall_function<void, CCApplication*, bool>("libcocos2d", "CCApplication::toggleVerticalSync", this, enable); }
+    bool get_vertical_sync_enabled() { return utilities::thiscall_function<bool, CCApplication*>("libcocos2d", "CCApplication::getVerticalSyncEnabled", this); }
+    void set_animation_interval(double interval) { return utilities::thiscall_function<void, CCApplication*, double>("libcocos2d", "CCApplication::setAnimationInterval", this, interval); }
   };
 
   class Channel {
   public:
-    static Channel* get_channel() { return (Channel*)(*(uintptr_t*)(*(uintptr_t*)(casanova::utilities::get_module(_t("GeometryDash.exe")) + 0x3222A8) + 0x134)); }
-    void set_pitch(float pitch) { utilities::stdcall_function<void, void*, float>(_t("fmod"), _t("ChannelControl::setPitch"), this, pitch); }
+    static Channel* get_channel() { return reinterpret_cast<Channel*>(*reinterpret_cast<uintptr_t*>(*reinterpret_cast<uintptr_t*>(casanova::utilities::get_module("GeometryDash.exe") + 0x3222A8) + 0x134)); }
+    void set_pitch(float pitch) { utilities::stdcall_function<void, void*, float>("fmod", "ChannelControl::setPitch", this, pitch); }
   };
 
   class CCPoint {
@@ -228,19 +228,19 @@ namespace casanova::game_sdk {
     level.level_id = id;
     level.stars = game_level->stars;
     level.name = game_level->level_name;
-    level.is_demon = (bool)(game_level->demon);
+    level.is_demon = static_cast<bool>(game_level->demon);
     level.is_auto = game_level->auto_level;
 
     if (type == GJLevelType::local) {
-      level.author = _t("RobTop");
-      level.difficulty = (GJDifficulty)(game_level->difficulty);
+      level.author = "RobTop";
+      level.difficulty = static_cast<GJDifficulty>(game_level->difficulty);
 
       if (level.difficulty == GJDifficulty::demon)
         level.demon_difficulty = GJDemonDifficulty::easy;
     }
     else {
       level.author = game_level->user_name;
-      level.difficulty = (GJDifficulty)(game_level->ratings_sum / 10);
+      level.difficulty = static_cast<GJDifficulty>(game_level->ratings_sum / 10);
 
       if (level.is_demon) {
         switch (game_level->demon_difficulty) {
@@ -248,7 +248,9 @@ namespace casanova::game_sdk {
           case 4: level.demon_difficulty = GJDemonDifficulty::medium; break;
           case 5: level.demon_difficulty = GJDemonDifficulty::insane; break;
           case 6: level.demon_difficulty = GJDemonDifficulty::extreme; break;
-          case 0: case 1: case 2: level.demon_difficulty = GJDemonDifficulty::hard; break;
+          case 0: 
+          case 1: 
+          case 2: level.demon_difficulty = GJDemonDifficulty::hard; break;
         }
       }
     }
