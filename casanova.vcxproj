@@ -161,6 +161,7 @@
     <ClCompile Include="lib\imgui\imgui_tables.cpp" />
     <ClCompile Include="lib\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\discord.cpp" />
+    <ClCompile Include="src\discord_manager.cpp" />
     <ClCompile Include="src\hacks\display.cpp" />
     <ClCompile Include="src\hacks\speedhack.cpp" />
     <ClCompile Include="src\ui\ui.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="inc\common.hpp" />
     <ClInclude Include="inc\config.hpp" />
     <ClInclude Include="inc\discord.hpp" />
+    <ClInclude Include="inc\discord_manager.hpp" />
     <ClInclude Include="inc\hacks.hpp" />
     <ClInclude Include="inc\ui.hpp" />
     <ClInclude Include="inc\utilities\base_features.hpp" />

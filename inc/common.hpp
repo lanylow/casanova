@@ -33,6 +33,7 @@
 #include "config.hpp"
 #include "hacks.hpp"
 #include "discord.hpp"
+#include "discord_manager.hpp"
 #include "ui.hpp"
 #include "hooks.hpp"
 #include "entry.hpp"

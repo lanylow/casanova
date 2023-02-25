@@ -63,6 +63,9 @@
     <ClCompile Include="src\discord.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\discord_manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\common.hpp">
@@ -129,6 +132,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\discord.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\discord_manager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

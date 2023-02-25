@@ -140,45 +140,45 @@ int __stdcall casanova::hooks::queryperformancecounter(LARGE_INTEGER* count) {
 }
 
 void* __fastcall casanova::hooks::playlayer_create(game_sdk::GJGameLevel* ecx, void* edx) {
-  if (player_state != game_sdk::GJPlayerState::editor)
-    update_timestamp = true;
+  if (discord_manager::player_state != game_sdk::GJPlayerState::editor)
+    discord_manager::update_timestamp = true;
 
-  game_level = ecx;
-  player_state = game_sdk::GJPlayerState::level;
-  update_presence = true;
+  discord_manager::game_level = ecx;
+  discord_manager::player_state = game_sdk::GJPlayerState::level;
+  discord_manager::update_presence = true;
 
   return trampolines::playlayer_create(ecx);
 }
 
 void __fastcall casanova::hooks::playlayer_onquit(void* ecx, void* edx) {
-  player_state = game_sdk::GJPlayerState::menu;
-  update_timestamp = true;
-  update_presence = true;
+  discord_manager::player_state = game_sdk::GJPlayerState::menu;
+  discord_manager::update_timestamp = true;
+  discord_manager::update_presence = true;
 
   return trampolines::playlayer_onquit(ecx);
 }
 
 void* __fastcall casanova::hooks::playlayer_shownewbest(void* ecx, void* edx, char a2, float a3, int a4, char a5, char a6, char a7) {
-  update_presence = true;
+  discord_manager::update_presence = true;
 
   return trampolines::playlayer_shownewbest(ecx, a2, a3, a4, a5, a6, a7);
 }
 
 void __fastcall casanova::hooks::editorpauselayer_onexiteditor(void* ecx, void* edx, void* a2) {
-  player_state = game_sdk::GJPlayerState::menu;
-  update_timestamp = true;
-  update_presence = true;
+  discord_manager::player_state = game_sdk::GJPlayerState::menu;
+  discord_manager::update_timestamp = true;
+  discord_manager::update_presence = true;
 
   return trampolines::editorpauselayer_onexiteditor(ecx, a2);
 }
 
 void* __fastcall casanova::hooks::leveleditorlayer_create(game_sdk::GJGameLevel* ecx, void* edx) {
-  if (player_state != game_sdk::GJPlayerState::level)
-    update_timestamp = true;
+  if (discord_manager::player_state != game_sdk::GJPlayerState::level)
+    discord_manager::update_timestamp = true;
 
-  player_state = game_sdk::GJPlayerState::editor;
-  update_presence = true;
-  game_level = ecx;
+  discord_manager::player_state = game_sdk::GJPlayerState::editor;
+  discord_manager::update_presence = true;
+  discord_manager::game_level = ecx;
 
   return trampolines::leveleditorlayer_create(ecx);
 }
@@ -187,24 +187,24 @@ void __fastcall casanova::hooks::leveleditorlayer_addspecial(void* ecx, void* ed
   trampolines::leveleditorlayer_addspecial(ecx, object);
 
   int object_count = *reinterpret_cast<int*>(reinterpret_cast<uintptr_t>(ecx) + 0x3A0);
-  if (game_level->object_count >= object_count)
+  if (discord_manager::game_level->object_count >= object_count)
     return;
 
   fix_object_count(ecx);
     
-  update_presence = true;
+  discord_manager::update_presence = true;
 }
 
 void __fastcall casanova::hooks::leveleditorlayer_removespecial(void* ecx, void* edx, void* object) {
   trampolines::leveleditorlayer_removespecial(ecx, object);
 
   int object_count = *reinterpret_cast<int*>(reinterpret_cast<uintptr_t>(ecx) + 0x3A0);
-  if (game_level->object_count < object_count)
+  if (discord_manager::game_level->object_count < object_count)
     return;
 
   fix_object_count(ecx);
 
-  update_presence = true;
+  discord_manager::update_presence = true;
 }
 
 int __fastcall casanova::hooks::menulayer_init(void* ecx, void* edx) {
@@ -228,11 +228,11 @@ int __fastcall casanova::hooks::menulayer_init(void* ecx, void* edx) {
 
     discord::init();
 
-    large_text = reinterpret_cast<char*>(utilities::resolve_multilevel(utilities::get_module("GeometryDash.exe"), { 0x3222D8, 0x108 }));
-    update_presence = true;
-    update_timestamp = true;
-    current_timestamp = time(nullptr);
-    ready = true;
+    discord_manager::large_text = reinterpret_cast<char*>(utilities::resolve_multilevel(utilities::get_module("GeometryDash.exe"), { 0x3222D8, 0x108 }));
+    discord_manager::update_presence = true;
+    discord_manager::update_timestamp = true;
+    discord_manager::current_timestamp = time(nullptr);
+    casanova::ready = true;
 
     return true;
   } ();
@@ -292,7 +292,7 @@ void casanova::hooks::init_rendering(game_sdk::CCEGLView* gl) {
 }
 
 void casanova::hooks::fix_object_count(void* layer) {
-  game_level->object_count_rand = *reinterpret_cast<int*>(reinterpret_cast<uintptr_t>(layer) + (0x3A0 - (4 * 2)));
-  game_level->object_count_seed = *reinterpret_cast<int*>(reinterpret_cast<uintptr_t>(layer) + (0x3A0 - 4));
-  game_level->object_count = *reinterpret_cast<int*>(reinterpret_cast<uintptr_t>(layer) + 0x3A0);
+  discord_manager::game_level->object_count_rand = *reinterpret_cast<int*>(reinterpret_cast<uintptr_t>(layer) + (0x3A0 - (4 * 2)));
+  discord_manager::game_level->object_count_seed = *reinterpret_cast<int*>(reinterpret_cast<uintptr_t>(layer) + (0x3A0 - 4));
+  discord_manager::game_level->object_count = *reinterpret_cast<int*>(reinterpret_cast<uintptr_t>(layer) + 0x3A0);
 }

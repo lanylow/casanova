@@ -58,7 +58,7 @@ void casanova::ui::render() {
 
     if (add_button("Discord Rich Presence", config::discord_presence)) {
       if (config::discord_presence)
-        update_presence = true;
+        discord_manager::update_presence = true;
       else
         discord::clear();
     }
